@@ -29,7 +29,7 @@ func NewUserService(users repository.UserRepository) UserService {
 }
 
 func (s *userService) CreateUser(req dto.CreateUserRequest) (*models.User, error) {
-
+	
 	user := &models.User{
 		FullName:       strings.TrimSpace(req.FullName),
 		Email:          strings.TrimSpace(req.Email),
@@ -70,21 +70,10 @@ func (s *userService) UpdateUser(id uint, req dto.UpdateUserRequest) (*models.Us
 		return nil, err
 	}
 
-	if req.FullName != nil {
-
-		user.FullName = strings.TrimSpace(*req.FullName)
+	if err := s.applyUserUpdate(user, req); err != nil {
+		return nil, err
 	}
 
-	if req.Phone != nil {
-
-		user.Phone = strings.TrimSpace(*req.Phone)
-	}
-
-	if req.DefaultAddress != nil {
-
-		user.DefaultAddress = strings.TrimSpace(*req.DefaultAddress)
-
-	}
 	if err := s.users.Update(user); err != nil {
 		return nil, err
 	}
@@ -101,7 +90,9 @@ func (s *userService) DeleteUser(id uint) error {
 		}
 		return err
 	}
+
 	return s.users.Delete(id)
+
 }
 
 func (s *userService) ListUsers() ([]models.User, error) {
@@ -110,4 +101,38 @@ func (s *userService) ListUsers() ([]models.User, error) {
 		return nil, err
 	}
 	return users, nil
+
+}
+
+
+
+func (s *userService) applyUserUpdate(user *models.User, req dto.UpdateUserRequest) error {
+
+	if req.FullName != nil {
+		fullName := strings.TrimSpace(*req.FullName)
+		if fullName == "" {
+			return errors.New("имя не может быть пустым")
+		}
+		user.FullName = *req.FullName
+	}
+
+	if req.Phone != nil {
+
+		phone := strings.TrimSpace(*req.Phone)
+		if phone == "" {
+			return errors.New("поле phone не должно быть пустым")
+		}
+		user.Phone = phone
+	}
+
+	if req.DefaultAddress != nil {
+
+		address := strings.TrimSpace(*req.DefaultAddress)
+		if address == "" {
+			return errors.New("поле address не должно быть пустым")
+		}
+		user.DefaultAddress = *req.DefaultAddress
+
+	}
+	return nil
 }
