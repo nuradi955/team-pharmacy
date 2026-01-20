@@ -23,9 +23,6 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 }
 
 func (r *gormUserRepository) Create(user *models.User) error {
-	if user == nil {
-		return nil
-	}
 
 	return r.db.Create(user).Error
 
@@ -42,9 +39,6 @@ func (r *gormUserRepository) GetByID(id uint) (*models.User, error) {
 
 func (r *gormUserRepository) Update(user *models.User) error {
 
-	if user == nil {
-		return nil
-	}
 	return r.db.Save(&user).Error
 
 }
