@@ -26,9 +26,8 @@ func (h *UserHandler) RegisterRoutes(r *gin.Engine) {
 		users.POST("", h.Create)
 		users.PATCH("/:id", h.Update)
 		users.DELETE("/:id", h.Delete)
-		users.GET("",h.List)
-}
-
+		users.GET("", h.List)
+	}
 
 }
 func (h *UserHandler) Create(c *gin.Context) {
@@ -54,6 +53,7 @@ func (h *UserHandler) GetByID(c *gin.Context) {
 	id, err := strconv.ParseUint(idParam, 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
+		return
 	}
 
 	user, err := h.service.GetUserByID(uint(id))
@@ -74,6 +74,7 @@ func (h *UserHandler) Update(c *gin.Context) {
 	id, err := strconv.ParseUint(idParam, 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
+		return
 	}
 
 	req := dto.UpdateUserRequest{}
@@ -102,6 +103,7 @@ func (h *UserHandler) Delete(c *gin.Context) {
 	id, err := strconv.ParseUint(idParam, 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
+		return
 	}
 
 	if err := h.service.DeleteUser(uint(id)); err != nil {
@@ -117,10 +119,10 @@ func (h *UserHandler) Delete(c *gin.Context) {
 }
 
 func (h *UserHandler) List(c *gin.Context) {
-list, err := h.service.ListUsers()
-if err!=nil {
-c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-return
-}
-c.JSON(http.StatusOK, list)
+	list, err := h.service.ListUsers()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, list)
 }
