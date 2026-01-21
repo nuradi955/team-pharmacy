@@ -11,7 +11,7 @@ type CartService interface {
 	GetOrCreate(userID uint) (*models.Cart, error)
 	GetCartWithItems(userID uint) (*models.Cart, error)
 
-	CreateItem(userID uint, item *dto.AddCartItemRequest) error
+	CreateItem(userID uint, item *dto.AddCartItemRequest) (*models.CartItem, error)
 	UpdateItem(item *models.CartItem) error
 	DeleteItem(itemID uint) error
 
@@ -75,7 +75,7 @@ func (s *cartService) CreateItem(userID uint, req *dto.AddCartItemRequest) (*mod
 	if _, err := s.users.GetByID(userID); err != nil {
 		return nil, err
 	}
-	
+
 	cartWithItems, err := s.carts.GetCartWithItems(userID)
 	if err != nil {
 		return nil, err

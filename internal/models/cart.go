@@ -6,7 +6,7 @@ type Cart struct {
 	gorm.Model
 	UserID     uint       `gorm:"uniqueIndex"`
 	Items      []CartItem `gorm:"foreignKey:CartID;constraint:OnDelete:CASCADE;"`
-	TotalPrice float64    `json:"total_price"`
+	TotalPrice float64
 }
 
 type CartItem struct {
@@ -16,6 +16,6 @@ type CartItem struct {
 	MedicineID   uint      `gorm:"index;not null"`
 	Medicine     *Medicine `gorm:"constraint:OnDelete:CASCADE;"`
 	Quantity     int       `gorm:"not null"`
-	PricePerUnit float64     `gorm:"not null"`
-	LineTotal    float64     `gorm:"not null"`
+	PricePerUnit float64   `gorm:"not null"`
+	LineTotal    float64   `gorm:"not null"`
 }
