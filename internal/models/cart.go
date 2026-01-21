@@ -16,6 +16,6 @@ type CartItem struct {
 	MedicineID   uint      `gorm:"index;not null"`
 	Medicine     *Medicine `gorm:"constraint:OnDelete:CASCADE;"`
 	Quantity     int       `gorm:"not null"`
-	PricePerUnit int64     `gorm:"not null"`
-	LineTotal    int64     `gorm:"not null"`
+	PricePerUnit float64     `gorm:"not null"`
+	LineTotal    float64     `gorm:"not null"`
 }
