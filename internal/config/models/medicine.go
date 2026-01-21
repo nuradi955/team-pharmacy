@@ -13,7 +13,7 @@ type Medicine struct {
 	SubcategoryID        *uint   `json:"subcategory_id"`
 	Manufacturer         string  `json:"manufacturer" gorm:"size:150,not null"`
 	PrescriptionRequired bool    `json:"prescription_required"`
-	AvgRating            float64 `json:"avg_rating" gorm:"index,not null" binding:"min=1.0,max=10.0"`
+	AvgRating            float64 `json:"avg_rating" gorm:"index,not null check:rating>=1 AND rating<=10"`
 
 	// Category    Category    `json:"category" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SETNULL;"`
 	// Subcategory Subcategory `json:"subcategory" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SETNULL;"`
