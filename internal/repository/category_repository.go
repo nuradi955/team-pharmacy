@@ -42,6 +42,7 @@ func (r *gormCategoryRepository) GetByID(id uint) (*models.Category, error) {
 	return &category, nil
 }
 
+// неуверен
 func (r *gormCategoryRepository) Update(category *models.Category) error {
 	if category == nil {
 		return nil
