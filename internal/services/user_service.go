@@ -40,7 +40,6 @@ func (s *userService) CreateUser(req dto.CreateUserRequest) (*models.User, error
 	if err := s.users.Create(user); err != nil {
 		return nil, err
 	}
-
 	return user, nil
 }
 
