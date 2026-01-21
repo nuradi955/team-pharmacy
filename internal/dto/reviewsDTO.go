@@ -6,3 +6,5 @@ type ReviewsCreate struct {
 	Rating     uint   `json:"rating" binding:"required,min=1,max=10"`
 	Text       string `json:"text"`
 }
+
+

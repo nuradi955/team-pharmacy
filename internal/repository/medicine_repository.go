@@ -18,6 +18,7 @@ type MedicineRepo struct {
 	db *gorm.DB
 }
 
+
 func NewMedicineRepository(db *gorm.DB) MedicineRepository {
 	return &MedicineRepo{db: db}
 }

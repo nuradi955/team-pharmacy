@@ -1,4 +1,4 @@
-package service
+package services
 
 import (
 	"team-pharmacy/internal/config/dto"
@@ -12,3 +12,4 @@ type MedicineService interface {
 	Update(req dto.MedicineUpdate, id uint) error
 	Delete(id uint) error
 }
+

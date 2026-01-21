@@ -10,6 +10,7 @@ type MedicineCreate struct {
 	Manufacturer         string  `json:"manufacturer" binding:"required"`
 	PrescriptionRequired bool    `json:"prescription_required" binding:"required"`
 }
+
 type MedicineUpdate struct {
 	Name                 *string  `json:"name" binding:"omitempty"`
 	Description          *string  `json:"description"`
