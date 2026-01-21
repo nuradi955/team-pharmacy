@@ -9,6 +9,7 @@ type UpdateCartItemRequest struct {
 	Quantity int `json:"quantity" binding:"required,gt=0"`
 }
 
+
 // type CartResponse struct {
 // 	UserID     uint               `json:"user_id"`
 // 	Items      []CartItemResponse `json:"items"`

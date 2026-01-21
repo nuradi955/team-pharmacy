@@ -9,6 +9,7 @@ type Cart struct {
 	TotalPrice float64
 }
 
+
 type CartItem struct {
 	gorm.Model
 	CartID       uint      `gorm:"index;not null"`

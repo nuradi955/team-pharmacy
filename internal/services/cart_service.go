@@ -100,6 +100,7 @@ func (s *cartService) CreateItem(userID uint, req *dto.AddCartItemRequest) (*mod
 		}
 	}
 
+	
 	newitem := models.CartItem{
 		CartID:     cartWithItems.ID,
 		MedicineID: req.MedicineID,

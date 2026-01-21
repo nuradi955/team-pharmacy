@@ -18,6 +18,7 @@ type CartRepository interface {
 	ClearCart(userID uint) error
 }
 
+
 type gormCartRepository struct {
 	db *gorm.DB
 }
