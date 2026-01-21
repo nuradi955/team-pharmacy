@@ -30,7 +30,7 @@ func (m *MedicineRepo) GetAll() ([]models.Medicine, error) {
 	if err != nil {
 		return nil, err
 	}
-	return medicines, err
+	return medicines, nil
 }
 func (m *MedicineRepo) GetByID(id uint) (*models.Medicine, error) {
 	medicine := models.Medicine{}
