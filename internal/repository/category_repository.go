@@ -12,6 +12,7 @@ type CategoryRepository interface {
 	GetByID(id uint) (*models.Category, error)
 
 	UpdateCategory(category *models.Category) error
+
 	DeleteCategory(id uint) error
 }
 
