@@ -52,7 +52,7 @@ func (s *cartService) GetCartWithItems(userID uint) (*models.Cart, error) {
 		return nil, err
 	}
 
-	if cart == nil {
+	if cart != nil {
 		return nil, errors.New("cart not found")
 	}
 	cart.TotalPrice = 0
@@ -67,9 +67,6 @@ func (s *cartService) GetCartWithItems(userID uint) (*models.Cart, error) {
 func (s *cartService) CreateItem(userID uint, req *dto.AddCartItemRequest) (*models.Cart, error) {
 	if userID == 0 {
 		return nil, errors.New("id must be greater than 0")
-	}
-	if req == nil || req.MedicineID == 0 || req.Quantity == 0 {
-		return nil, errors.New("invalid request")
 	}
 
 	if _, err := s.users.GetByID(userID); err != nil {
