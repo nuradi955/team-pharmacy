@@ -47,6 +47,6 @@ func (r *ReviewRepo) GetByID(id uint) (*models.Review, error) {
 	}
 	return &review, nil
 }
-func (r *ReviewRepo) Delete(id uint)error{
-	return r.db.Delete(&models.Review{},id).Error
+func (r *ReviewRepo) Delete(id uint) error {
+	return r.db.Delete(&models.Review{}, id).Error
 }

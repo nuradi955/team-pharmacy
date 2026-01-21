@@ -47,5 +47,5 @@ func (m *MedicineRepo) Delete(id uint) error {
 	return m.db.Delete(&models.Medicine{}, id).Error
 }
 func (m *MedicineRepo) UpdateAvgRating(medicineID uint, avg float64) error {
-	return m.db.Model(&models.Medicine{}).Where("id = ?",medicineID).Update("avg_rating",avg).Error
+	return m.db.Model(&models.Medicine{}).Where("id = ?", medicineID).Update("avg_rating", avg).Error
 }
