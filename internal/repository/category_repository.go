@@ -10,10 +10,8 @@ type CategoryRepository interface {
 	List() ([]models.Category, error)
 	Create(category *models.Category) error
 	GetByID(id uint) (*models.Category, error)
-
-	UpdateCategory(category *models.Category) error
-
-	DeleteCategory(id uint) error
+	Update(category *models.Category) error
+	Delete(id uint) error
 }
 
 type gormCategoryRepository struct {
@@ -44,10 +42,13 @@ func (r *gormCategoryRepository) GetByID(id uint) (*models.Category, error) {
 	return &category, nil
 }
 
-func (r *gormCategoryRepository) UpdateCategory(category *models.Category) error {
+func (r *gormCategoryRepository) Update(category *models.Category) error {
+	if category == nil {
+		return nil
+	}
 	return r.db.Save(category).Error
 }
 
-func (r *gormCategoryRepository) DeleteCategory(id uint) error {
+func (r *gormCategoryRepository) Delete(id uint) error {
 	return r.db.Delete(&models.Category{}, id).Error
 }
