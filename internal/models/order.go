@@ -12,5 +12,3 @@ type Order struct {
 	DeliveryAddress string
 	Comment         string
 }
-
-
