@@ -1,8 +1,7 @@
 package services
 
 import (
-	"errors"
-
+	"team-pharmacy/internal/dto"
 	"team-pharmacy/internal/models"
 	"team-pharmacy/internal/repository"
 )
@@ -22,13 +21,13 @@ func NewCategoryService(repo repository.CategoryRepository) CategoryService {
 }
 
 func (s *categoryService) CreateCategory(req dto.CategoryCreate) (*models.Category, error) {
-	if req.Name == "" {
-		return nil, errors.New("category name must not be empty")
+	category := &models.Category{Name: req.Name}
+
+	if err := s.repo.Create(category); err != nil {
+		return nil, err
 	}
 
-	category := &models.Category{Name: req.Name}
-	err := s.repo.Create(category)
-	return category, err
+	return category, nil
 }
 
 func (s *categoryService) GetList() ([]models.Category, error) {
