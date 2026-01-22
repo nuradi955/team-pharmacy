@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"team-pharmacy/internal/config/models"
+	"team-pharmacy/internal/models"
 
 	"gorm.io/gorm"
 )

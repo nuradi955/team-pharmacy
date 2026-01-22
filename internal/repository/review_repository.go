@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"team-pharmacy/internal/config/models"
+	"team-pharmacy/internal/models"
 
 	"gorm.io/gorm"
 )
@@ -16,7 +16,6 @@ type ReviewRepository interface {
 type ReviewRepo struct {
 	db *gorm.DB
 }
-
 
 func NewReviewRepository(db *gorm.DB) ReviewRepository {
 	return &ReviewRepo{db: db}
