@@ -2,7 +2,6 @@ package repository
 
 import (
 	"errors"
-	"team-pharmacy/internal/errs"
 	"team-pharmacy/internal/models"
 
 	"gorm.io/gorm"
@@ -83,10 +82,13 @@ func (r *gormCartRepository) GetItem(cartID uint, medicineID uint) (*models.Cart
 	err := r.db.
 		Where("cart_id = ? AND medicine_id = ?", cartID, medicineID).
 		First(&item).Error
-
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, errs.ErrItemNotFound
+		return nil, nil 
 	}
 
-	return &item, err
+	if err != nil {
+		return nil, err 
+	}
+
+	return &item, nil
 }

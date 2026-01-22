@@ -65,7 +65,7 @@ func (h *CartHandler) CreateItem(c *gin.Context) {
 		return
 	}
 
-	_, err = h.service.CreateItem(uint(userID), req)
+	_ , err = h.service.CreateItem(uint(userID), req)
 	if err != nil {
 		if errors.Is(err, errs.ErrUserNotFound) {
 			c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
@@ -101,7 +101,7 @@ func (h *CartHandler) UpdateItem(c *gin.Context) {
 	var req *dto.UpdateCartItemRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
