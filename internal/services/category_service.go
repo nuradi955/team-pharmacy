@@ -26,7 +26,6 @@ func (s *categoryService) CreateCategory(req dto.CategoryCreate) (*models.Catego
 	if err := s.repo.Create(category); err != nil {
 		return nil, err
 	}
-
 	return category, nil
 }
 
