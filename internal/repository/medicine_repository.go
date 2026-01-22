@@ -1,10 +1,12 @@
 package repository
 
 import (
-	"team-pharmacy/internal/config/models"
+	"team-pharmacy/internal/models"
 
 	"gorm.io/gorm"
 )
+
+
 
 type MedicineRepository interface {
 	Create(medicine *models.Medicine) error
