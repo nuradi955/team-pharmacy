@@ -12,3 +12,5 @@ func RegisterRoutes(router *gin.Engine, userService services.UserService) {
 	userHandler.RegisterRoutes(router)
 
 }
+
+
