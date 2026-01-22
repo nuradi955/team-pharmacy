@@ -28,11 +28,11 @@ func NewMedicineService(medicineRepo repository.MedicineRepository, categoryRepo
 
 func (m *medicineService) Create(req dto.MedicineCreate) (*models.Medicine, error) {
 	// Cheking Category and Subcategory
-	err := m.CategoryRP.GetByID(req.CategoryID)
+	_,err := m.CategoryRP.GetByID(req.CategoryID)
 	if err != nil {
 		return nil, errors.New("Invalid Category")
 	}
-	err = m.SubCategoryRP.GetByID(req.SubcategoryID)
+	_,err = m.SubCategoryRP.GetByID(req.SubcategoryID)
 	if err != nil {
 		return nil, errors.New("Invalid Subcategory")
 	}
@@ -124,11 +124,11 @@ func (m *medicineService) Update(req dto.MedicineUpdate, id uint) error {
 		if err != nil {
 			return errors.New("Subcategory isnt correct")
 		}
-		if sub.CategoryID != nil{
-		if sub.CategoryID != *req.CategoryID {
+		
+		if sub.CategoryID != medicine.CategoryID {
 			return errors.New("Subcategory dont have Correct category")
 		}
-		}
+		
     medicine.SubcategoryID = *req.SubcategoryID
 		
 	}
@@ -157,11 +157,4 @@ func (m *medicineService)Delete(id uint)error{
 	return m.MedicineRepo.Delete(id)
 }
 
-// Name                 *string  `json:"name" binding:"omitempty"`
-// Description          *string  `json:"description"`
-// Price                *float64 `json:"price" binding:"omitempty,min=0.01,max=999999999"`
-// StockQuantity        *uint    `json:"stock_quantity"`
-// CategoryID           *uint    `json:"category_id" binding:"omitempty"`
-// SubcategoryID        *uint    `json:"subcategory_id" binding:"omitempty"`
-// Manufacturer         *string  `json:"manufacturer" binding:"omitempty"`
-// PrescriptionRequired *bool    `json:"prescription_required" binding:"omitempty"`
+

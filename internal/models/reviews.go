@@ -1,7 +1,6 @@
 package models
 
 import (
-	"team-pharmacy/internal/models"
 	"time"
 )
 
@@ -14,6 +13,6 @@ type Review struct {
 	CreatedAt  time.Time `json:"created_at"`
 
 	
-	User     models.User   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	Medicine models.Medicine `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	User     User   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Medicine Medicine `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
 }
