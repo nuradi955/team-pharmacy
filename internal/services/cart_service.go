@@ -62,6 +62,9 @@ func (s *cartService) CreateItem(userID uint, req *dto.AddCartItemRequest) (*dto
 	if err != nil {
 		return nil, err
 	}
+	if cart == nil {
+		return nil, errors.New("failed to get or create cart")
+	}
 
 	medicine, err := s.medicine.GetByID(req.MedicineID)
 	if err != nil {
@@ -156,13 +159,13 @@ func (s *cartService) UpdateItem(userID, itemID uint, req *dto.UpdateCartItemReq
 		return nil, errors.New("stock limit exceeded")
 	}
 
-	lineTotal := req.Quantity * int(medicine.Price)
+	lineTotal := int64(req.Quantity) * medicine.Price
 	newItem := dto.CartItemResponse{
 		ItemID:       item.ID,
 		MedicineID:   item.MedicineID,
 		Quantity:     req.Quantity,
 		PricePerUnit: int64(medicine.Price),
-		LineTotal:    int64(lineTotal),
+		LineTotal:    lineTotal,
 	}
 
 	item.Quantity = req.Quantity

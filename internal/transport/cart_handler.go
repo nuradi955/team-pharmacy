@@ -45,7 +45,7 @@ func (h *CartHandler) GetCart(c *gin.Context) {
 			c.JSON(http.StatusNotFound, err.Error())
 			return
 		}
-		c.JSON(http.StatusInternalServerError, err.Error())
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, cart)
@@ -61,7 +61,7 @@ func (h *CartHandler) CreateItem(c *gin.Context) {
 	var req *dto.AddCartItemRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
