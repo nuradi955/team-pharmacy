@@ -17,6 +17,16 @@ func NewCategoryHandler(service services.CategoryService) *CategoryHandler {
 	return &CategoryHandler{service: service}
 }
 
+func (h *CategoryHandler) RegisterRoutes(r *gin.Engine) {
+	categories := r.Group("/categories")
+
+	{
+		categories.GET("/:id", h.GetByID)
+		categories.POST("", h.Create)
+		categories.GET("", h.GetList)
+	}
+}
+
 func (h *CategoryHandler) Create(c *gin.Context) {
 	var req dto.CategoryCreate
 	if err := c.ShouldBindBodyWithJSON(&req); err != nil {
