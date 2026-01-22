@@ -7,7 +7,6 @@ type CreateUserRequest struct {
 	DefaultAddress string `json:"default_address" binding:"required,max=255"`
 }
 
-
 type UpdateUserRequest struct {
 	FullName       *string `json:"full_name" binding:"omitempty"`
 	Email          *string `json:"email" binding:"omitempty,email"`

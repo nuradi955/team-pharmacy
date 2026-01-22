@@ -4,11 +4,9 @@ import "gorm.io/gorm"
 
 type Cart struct {
 	gorm.Model
-	UserID     uint       `gorm:"uniqueIndex"`
-	Items      []CartItem `gorm:"foreignKey:CartID;constraint:OnDelete:CASCADE;"`
-	TotalPrice float64
+	UserID uint       `gorm:"uniqueIndex"`
+	Items  []CartItem `gorm:"foreignKey:CartID;constraint:OnDelete:CASCADE;"`
 }
-
 
 type CartItem struct {
 	gorm.Model
@@ -17,6 +15,5 @@ type CartItem struct {
 	MedicineID   uint      `gorm:"index;not null"`
 	Medicine     *Medicine `gorm:"constraint:OnDelete:CASCADE;"`
 	Quantity     int       `gorm:"not null"`
-	PricePerUnit float64   `gorm:"not null"`
-	LineTotal    float64   `gorm:"not null"`
+	PricePerUnit int64     `gorm:"not null"`
 }
