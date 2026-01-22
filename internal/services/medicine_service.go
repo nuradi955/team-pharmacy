@@ -32,7 +32,7 @@ func (m *medicineService) Create(req dto.MedicineCreate) (*models.Medicine, erro
 	if err != nil {
 		return nil, errors.New("Invalid Category")
 	}
-	err := m.SubCategoryRP.GetByID(req.SubcategoryID)
+	err = m.SubCategoryRP.GetByID(req.SubcategoryID)
 	if err != nil {
 		return nil, errors.New("Invalid Subcategory")
 	}
@@ -90,7 +90,7 @@ func (m *medicineService) Update(req dto.MedicineUpdate, id uint) error {
 		if name == "" {
 			return errors.New("name isnt correct")
 		}
-		medicine.Name = *req.Name
+		medicine.Name = name
 	}
 
 	if req.Manufacturer != nil {
@@ -98,7 +98,7 @@ func (m *medicineService) Update(req dto.MedicineUpdate, id uint) error {
 		if manufacturer == "" {
 			return errors.New("Manufacturer isnt correct")
 		}
-		medicine.Manufacturer = *req.Manufacturer
+		medicine.Manufacturer = manufacturer
 	}
 
 	if req.Price != nil {
