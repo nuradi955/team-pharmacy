@@ -18,8 +18,8 @@ type MedicineService interface {
 
 type medicineService struct {
 	MedicineRepo repository.MedicineRepository
-	// CategoryRP repository.CategoryRepository
-	// SubCategoryRP repository.SubcategoryRepository
+	CategoryRP repository.CategoryRepository
+	SubCategoryRP repository.SubcategoryRepository
 }
 
 func NewMedicineService(medicineRepo repository.MedicineRepository, categoryRepo repository.CategoryRepository, subcategoryRepo repository.SubcategoryRepository) MedicineService {
