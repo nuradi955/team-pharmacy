@@ -35,7 +35,7 @@ func (h *CategoryHandler) Create(c *gin.Context) {
 func (h *CategoryHandler) GetList(c *gin.Context) {
 	categories, err := h.service.GetList()
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, categories)
