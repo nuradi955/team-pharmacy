@@ -48,7 +48,7 @@ func (m *medicineService) Create(req dto.MedicineCreate) (*models.Medicine, erro
 
 	// Create
 	medicine := &models.Medicine{
-		Name:                 req.Name,
+		Name:                 name,
 		Description:          req.Description,
 		Price:                req.Price,
 		StockQuantity:        req.StockQuantity,
@@ -124,10 +124,13 @@ func (m *medicineService) Update(req dto.MedicineUpdate, id uint) error {
 		if err != nil {
 			return errors.New("Subcategory isnt correct")
 		}
+		if sub.CategoryID != nil{
 		if sub.CategoryID != *req.CategoryID {
 			return errors.New("Subcategory dont have Correct category")
 		}
+		}
     medicine.SubcategoryID = *req.SubcategoryID
+		
 	}
 
     if req.Description != nil{
