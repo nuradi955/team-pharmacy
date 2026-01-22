@@ -26,31 +26,31 @@ func (h *CategoryHandler) Create(c *gin.Context) {
 
 	category, err := h.service.CreateCategory(req)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusCreated, category)
 }
 
 func (h *CategoryHandler) GetList(c *gin.Context) {
-	categorys, err := h.service.GetList()
+	categories, err := h.service.GetList()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, categorys)
+	c.JSON(http.StatusOK, categories)
 }
 
 func (h *CategoryHandler) GetByID(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil || id == 0 {
+	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
 		return
 	}
 
 	category, err := h.service.GetByID(uint(id))
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, category)
