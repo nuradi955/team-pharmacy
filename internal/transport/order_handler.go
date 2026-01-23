@@ -52,6 +52,10 @@ func (h *OrderHandler) CreateOrder(c *gin.Context) {
 
 	order, err := h.orderService.CreateOrder(uint(userID), &req)
 	if err != nil {
+		if errors.Is(err, errs.ErrCartNotFound) || errors.Is(err, errs.ErrCartIsEmpty) {
+			c.JSON(http.StatusNotFound, gin.H{"error": "cart not found or is empty"})
+			return
+		}
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
 		return
 	}
@@ -120,8 +124,11 @@ func (h *OrderHandler) UpdateStatus(c *gin.Context) {
 		return
 	}
 
-
 	if err := h.orderService.UpdateOrder(uint(orderID), &req); err != nil {
+		if errors.Is(err, errs.ErrInvalidStatus) {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "status error"})
+			return
+		}
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
 		return
 	}
