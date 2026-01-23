@@ -23,13 +23,13 @@ type OrderStatusRequest struct {
 }
 
 type OrderResponse struct {
-	UserID          uint               `gorm:"index;not null"`
-	Status          models.OrderStatus `gorm:"type:varchar(32);not null;index"`
-	TotalPrice      int64              `gorm:"not null"`
-	DiscountTotal   int64              `gorm:"not null"`
-	FinalPrice      int64              `gorm:"not null"`
-	DeliveryAddress string             `gorm:"not null"`
-	Comment         *string            `gorm:"type:varchar(255)"`
-	Items           []models.OrderItem `gorm:"constraint:OnDelete:CASCADE;"`
+	UserID          uint               `json:"user_id"`
+	Status          models.OrderStatus `json:"status"`
+	TotalPrice      int64              `json:"total_price"`
+	DiscountTotal   int64              `json:"discount_total"`
+	FinalPrice      int64              `json:"final_price"`
+	DeliveryAddress string             `json:"delivery_address"`
+	Comment         *string            `json:"comment"`
+	Items           []models.OrderItem `json:"items"`
 	// Payments        []models.Payment   `gorm:"constraint:OnDelete:CASCADE;"`
 }

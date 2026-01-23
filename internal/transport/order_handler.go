@@ -50,30 +50,6 @@ func (h *OrderHandler) CreateOrder(c *gin.Context) {
 		return
 	}
 
-	_, err = h.userService.GetUserByID(uint(userID))
-	if err != nil {
-		if errors.Is(err, errs.ErrUserNotFound) {
-			c.JSON(http.StatusNotFound, gin.H{"error": "user not found"})
-			return
-		}
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal server error"})
-		return
-	}
-
-	_, err = h.cartService.GetCartWithItems(uint(userID))
-	if err != nil {
-		if errors.Is(err, errs.ErrCartNotFound) {
-			c.JSON(http.StatusNotFound, gin.H{"errors": "cart not found"})
-			return
-		}
-		if errors.Is(err, errs.ErrCartIsEmpty) {
-			c.JSON(http.StatusBadRequest, gin.H{"error": " cart is empty"})
-			return
-		}
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
-		return
-	}
-
 	order, err := h.orderService.CreateOrder(uint(userID), &req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
@@ -144,15 +120,6 @@ func (h *OrderHandler) UpdateStatus(c *gin.Context) {
 		return
 	}
 
-	_, err = h.orderService.GetByID(uint(orderID))
-	if err != nil {
-		if errors.Is(err, errs.ErrOrderNotFound) {
-			c.JSON(http.StatusNotFound, gin.H{"error": "order not found"})
-			return
-		}
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})
-		return
-	}
 
 	if err := h.orderService.UpdateOrder(uint(orderID), &req); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "server error"})

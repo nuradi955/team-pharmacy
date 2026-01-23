@@ -33,7 +33,7 @@ func (r *gormOrderRepository) CreateOrder(order *models.Order) error {
 func (r *gormOrderRepository) GetByID(orderID uint) (*models.Order, error) {
 	var order *models.Order
 
-	if err := r.db.Where("order_id = ?", orderID).Preload("Items").Preload("Payments").First(&order, orderID).Error; err != nil {
+	if err := r.db.Preload("Items").Preload("Payments").First(&order, orderID).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, errs.ErrOrderNotFound
 		}

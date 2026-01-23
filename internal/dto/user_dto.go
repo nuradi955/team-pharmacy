@@ -15,8 +15,8 @@ type UpdateUserRequest struct {
 }
 
 type CreateUserResponse struct {
-	FullName       string `json:"full_name" binding:"required"`
-	Email          string `json:"email" binding:"required,email"`
-	Phone          string `json:"phone" binding:"required,min=11"`
-	DefaultAddress string `json:"default_address" binding:"required,max=255"`
+	FullName       string `json:"full_name"`
+	Email          string `json:"email"`
+	Phone          string `json:"phone"`
+	DefaultAddress string `json:"default_address"`
 }
