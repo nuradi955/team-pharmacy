@@ -116,7 +116,7 @@ func (m *medicineService) Update(req dto.MedicineUpdate, id uint) error {
 		if err := m.CategoryRP.GetByID(*req.CategoryID); err != nil {
 			return errors.New("CategoryID isnt Correct")
 		}
-		medicine.CategoryID = *req.CategoryID
+		medicine.CategoryID = req.CategoryID
 	}
 
 	if req.SubcategoryID != nil {
@@ -124,12 +124,14 @@ func (m *medicineService) Update(req dto.MedicineUpdate, id uint) error {
 		if err != nil {
 			return errors.New("Subcategory isnt correct")
 		}
-		
-		if sub.CategoryID != medicine.CategoryID {
+		if medicine.CategoryID == nil{
+			return errors.New("Error:CategoryID is nill")
+		}
+		if sub.CategoryID != *medicine.CategoryID {
 			return errors.New("Subcategory dont have Correct category")
 		}
 		
-    medicine.SubcategoryID = *req.SubcategoryID
+    medicine.SubcategoryID = req.SubcategoryID
 		
 	}
 
