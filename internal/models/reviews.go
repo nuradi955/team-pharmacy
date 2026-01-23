@@ -12,6 +12,7 @@ type Review struct {
 	Text       string    `json:"text" gorm:"size:500"`
 	CreatedAt  time.Time `json:"created_at"`
 
-	// User     Models.User     `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	// Medicine Models.Medicine `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
+	
+	User     User   `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Medicine Medicine `gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE"`
 }

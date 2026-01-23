@@ -26,11 +26,11 @@ func main() {
 	cartService := services.NewCartService(cartRepo, userRepo, medicRepo)
 	orderServer := services.NewOrderService(orderRepo, userRepo, cartRepo, medicRepo)
 
-	router := gin.Default()
+router := gin.Default()
 
 	transport.RegisterRoutes(router, userService, cartService, orderServer)
 
-	if err := router.Run(); err != nil {
-		log.Fatalf("не удалось запустить HTTP-сервер: %v", err)
-	}
+if err := router.Run(); err != nil {
+	log.Fatalf("не удалось запустить HTTP-сервер: %v", err)
+}
 }
