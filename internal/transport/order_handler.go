@@ -89,16 +89,6 @@ func (h *OrderHandler) GetAllOrdersUser(c *gin.Context) {
 		return
 	}
 
-	_, err = h.userService.GetUserByID(uint(userID))
-	if err != nil {
-		if errors.Is(err, errs.ErrUserNotFound) {
-			c.JSON(http.StatusNotFound, gin.H{"error": "user not found"})
-			return
-		}
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal server error"})
-		return
-	}
-
 	orders, err := h.orderService.GetListOrders(uint(userID))
 	if err != nil {
 		if errors.Is(err, errs.ErrOrderNotFound) {

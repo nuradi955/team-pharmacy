@@ -48,7 +48,7 @@ func (r *gormCartRepository) GetCartWithItems(userID uint) (*models.Cart, error)
 
 	var cart models.Cart
 
-	if err := r.db.Preload("Items").Where("user_id = ?", userID).First(&cart).Error; err != nil {
+	if err := r.db.Preload("Items.Medicine").Where("user_id = ?", userID).First(&cart).Error; err != nil {
 		return nil, err
 	}
 	return &cart, nil

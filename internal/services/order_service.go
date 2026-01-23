@@ -68,7 +68,7 @@ func (s *orderService) CreateOrder(userID uint, req *dto.OrderCreateRequest) (*d
 			MedicineName: cartItem.Medicine.Name,
 			Quantity:     cartItem.Quantity,
 			PricePerUnit: cartItem.PricePerUnit,
-			LineTotal:    int64(lineTotal),
+			LineTotal:    lineTotal,
 		})
 		totalPrice += lineTotal
 	}
