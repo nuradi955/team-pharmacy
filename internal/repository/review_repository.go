@@ -17,7 +17,6 @@ type ReviewRepo struct {
 	db *gorm.DB
 }
 
-
 func NewReviewRepository(db *gorm.DB) ReviewRepository {
 	return &ReviewRepo{db: db}
 }
