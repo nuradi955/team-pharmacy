@@ -19,7 +19,7 @@ type OrderShortResponse struct {
 }
 
 type OrderStatusRequest struct {
-	Status *models.OrderStatus `json:"status"`
+	Status *models.OrderStatus `json:"status" binding:"required"`
 }
 
 type OrderResponse struct {
