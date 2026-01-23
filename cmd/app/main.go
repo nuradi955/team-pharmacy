@@ -14,21 +14,30 @@ import (
 func main() {
 	db := config.SetUpDatabaseConnection()
 
-	if err := db.AutoMigrate(&models.User{}, &models.Cart{}, &models.Medicine{}, &models.CartItem{}); err != nil {
-		log.Fatalf("не удалось выполнить миграции: %v", err)
-	}
-	userRepo := repository.NewUserRepository(db)
-	cartRepo := repository.NewCartRepository(db)
-	medicRepo := repository.NewMedicineRepository(db)
+if err := db.AutoMigrate(
+	&models.User{},
+	&models.Category{},
+	&models.Cart{},
+	&models.Medicine{},
+	&models.CartItem{},
+); err != nil {
+	log.Fatalf("не удалось выполнить миграции: %v", err)
+}
 
-	userService := services.NewUserService(userRepo)
-	cartService := services.NewCartService(cartRepo, userRepo, medicRepo)
+userRepo := repository.NewUserRepository(db)
+categoryRepo := repository.NewCategoryRepository(db)
+cartRepo := repository.NewCartRepository(db)
+medRepo := repository.NewMedicineRepository(db)
 
-	router := gin.Default()
+userService := services.NewUserService(userRepo)
+categoryService := services.NewCategoryService(categoryRepo)
+cartService := services.NewCartService(cartRepo, userRepo, medRepo)
 
-	transport.RegisterRoutes(router, userService, cartService)
+router := gin.Default()
 
-	if err := router.Run(); err != nil {
-		log.Fatalf("не удалось запустить HTTP-сервер: %v", err)
-	}
+transport.RegisterRoutes(router, userService, categoryService, cartService)
+
+if err := router.Run(); err != nil {
+	log.Fatalf("не удалось запустить HTTP-сервер: %v", err)
+}
 }
