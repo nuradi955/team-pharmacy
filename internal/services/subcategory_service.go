@@ -2,14 +2,17 @@ package services
 
 import (
 	"errors"
+	"fmt"
 
 	"team-pharmacy/internal/dto"
 	"team-pharmacy/internal/models"
 	"team-pharmacy/internal/repository"
 )
 
+var ErrCategoryNotFound = errors.New("category not found")
+
 type SubcategoryService interface {
-	Create(req dto.SubcategoryCreate) (*models.Subcategory, error)
+	Create(categoryID uint, req dto.SubcategoryCreateRequest) (*models.Subcategory, error)
 	GetByCategory(categoryID uint) ([]models.Subcategory, error)
 	GetByID(id uint) (*models.Subcategory, error)
 }
@@ -29,16 +32,15 @@ func NewSubcategoryService(
 	}
 }
 
-func (s *subcategoryService) Create(req dto.SubcategoryCreate) (*models.Subcategory, error) {
-
-_, err := s.catRepo.GetByID(req.CategoryID)
-if err != nil {
-	return nil, fmt.Errorf("category not found: %w", err)
-}
+func (s *subcategoryService) Create(categoryID uint, req dto.SubcategoryCreateRequest) (*models.Subcategory, error) {
+	_, err := s.catRepo.GetByID(categoryID)
+	if err != nil {
+		return nil, fmt.Errorf("%w", ErrCategoryNotFound)
+	}
 
 	sub := &models.Subcategory{
 		Name:       req.Name,
-		CategoryID: req.CategoryID,
+		CategoryID: categoryID,
 	}
 
 	if err := s.subRepo.Create(sub); err != nil {

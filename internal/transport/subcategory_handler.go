@@ -1,9 +1,9 @@
 package transport
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
-	"strings"
 
 	"team-pharmacy/internal/dto"
 	"team-pharmacy/internal/services"
@@ -29,9 +29,8 @@ func (h *SubcategoryHandler) RegisterRoutes(r *gin.Engine) {
 }
 
 func (h *SubcategoryHandler) Create(c *gin.Context) {
-	var req dto.SubcategoryCreate
+	var req dto.SubcategoryCreateRequest
 
-	// Сначала биндим JSON
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -42,11 +41,10 @@ func (h *SubcategoryHandler) Create(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid category id"})
 		return
 	}
-	req.CategoryID = uint(categoryID)
 
-	subcategory, err := h.service.Create(req)
+	subcategory, err := h.service.Create(uint(categoryID), req)
 	if err != nil {
-		if strings.Contains(err.Error(), "category not found") {
+		if errors.Is(err, services.ErrCategoryNotFound) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
