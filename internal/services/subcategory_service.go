@@ -31,10 +31,10 @@ func NewSubcategoryService(
 
 func (s *subcategoryService) Create(req dto.SubcategoryCreate) (*models.Subcategory, error) {
 
-	_, err := s.catRepo.GetByID(req.CategoryID)
-	if err != nil {
-		return nil, errors.New("category not found")
-	}
+_, err := s.catRepo.GetByID(req.CategoryID)
+if err != nil {
+	return nil, fmt.Errorf("category not found: %w", err)
+}
 
 	sub := &models.Subcategory{
 		Name:       req.Name,
