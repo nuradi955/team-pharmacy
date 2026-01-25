@@ -22,7 +22,6 @@ type OrderStatusRequest struct {
 }
 
 type OrderResponse struct {
-	ID              uint                `json:"id"`
 	UserID          uint                `json:"user_id"`
 	Status          string              `json:"status"`
 	TotalPrice      int64               `json:"total_price"`

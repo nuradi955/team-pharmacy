@@ -27,6 +27,7 @@ type OrderItem struct {
 	OrderID      uint   `gorm:"index;not null"`
 	Order        *Order `gorm:"constraint:OnDelete:CASCADE;"`
 	MedicineID   uint   `gorm:"index;not null"`
+
 	MedicineName string `gorm:"type:varchar(255);not null"`
 	Quantity     int    `gorm:"not null"`
 	PricePerUnit int64  `gorm:"not null"`

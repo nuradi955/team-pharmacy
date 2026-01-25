@@ -90,7 +90,7 @@ func (s *orderService) CreateOrder(userID uint, req *dto.OrderCreateRequest) (*d
 
 	itemsResp := make([]dto.OrderItemResponse, 0, len(order.Items))
 
-	for _, item := range orderItems {
+	for _, item := range order.Items {
 		itemsResp = append(itemsResp, dto.OrderItemResponse{
 			MedicineID:   item.MedicineID,
 			MedicineName: item.MedicineName,
@@ -101,7 +101,7 @@ func (s *orderService) CreateOrder(userID uint, req *dto.OrderCreateRequest) (*d
 	}
 
 	return &dto.OrderResponse{
-		ID:              order.ID,
+		UserID:          order.UserID,
 		Status:          string(order.Status),
 		TotalPrice:      order.TotalPrice,
 		DiscountTotal:   order.DiscountTotal,
@@ -136,7 +136,7 @@ func (s *orderService) GetByID(orderID uint) (*dto.OrderResponse, error) {
 	}
 
 	return &dto.OrderResponse{
-
+		UserID:          order.UserID,
 		Status:          string(order.Status),
 		TotalPrice:      order.TotalPrice,
 		DiscountTotal:   order.DiscountTotal,
