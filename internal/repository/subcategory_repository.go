@@ -50,7 +50,20 @@ func (r *gormSubcategoryRepository) GetByID(id uint) (*models.Subcategory, error
 }
 
 func (r *gormSubcategoryRepository) Update(subcategory *models.Subcategory) error {
-	return r.db.Updates(subcategory).Error
+	result := r.db.
+		Model(&models.Subcategory{}).
+		Where("id = ?", subcategory.ID).
+		Updates(subcategory)
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return errors.New("subcategory not found")
+	}
+
+	return nil
 }
 
 func (r *gormSubcategoryRepository) Delete(id uint) error {
