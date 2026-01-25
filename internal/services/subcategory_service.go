@@ -2,11 +2,12 @@ package services
 
 import (
 	"errors"
-	"fmt"
 
 	"team-pharmacy/internal/dto"
 	"team-pharmacy/internal/models"
 	"team-pharmacy/internal/repository"
+
+	"gorm.io/gorm"
 )
 
 var ErrCategoryNotFound = errors.New("category not found")
@@ -35,7 +36,10 @@ func NewSubcategoryService(
 func (s *subcategoryService) Create(categoryID uint, req dto.SubcategoryCreateRequest) (*models.Subcategory, error) {
 	_, err := s.catRepo.GetByID(categoryID)
 	if err != nil {
-		return nil, fmt.Errorf("%w", ErrCategoryNotFound)
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, ErrCategoryNotFound
+		}
+		return nil, err
 	}
 
 	sub := &models.Subcategory{
