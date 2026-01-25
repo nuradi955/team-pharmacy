@@ -88,14 +88,28 @@ func (s *orderService) CreateOrder(userID uint, req *dto.OrderCreateRequest) (*d
 		return nil, err
 	}
 
-	return &dto.OrderResponse{UserID: userID,
-		Status:          models.OrderStatusPendingPayment,
+	itemsResp := make([]dto.OrderItemResponse, 0, len(order.Items))
+
+	for _, item := range orderItems {
+		itemsResp = append(itemsResp, dto.OrderItemResponse{
+			MedicineID:   item.MedicineID,
+			MedicineName: item.MedicineName,
+			Quantity:     item.Quantity,
+			PricePerUnit: item.PricePerUnit,
+			LineTotal:    item.LineTotal,
+		})
+	}
+
+	return &dto.OrderResponse{
+		ID:              order.ID,
+		Status:          string(order.Status),
 		TotalPrice:      order.TotalPrice,
 		DiscountTotal:   order.DiscountTotal,
 		FinalPrice:      order.FinalPrice,
 		DeliveryAddress: order.DeliveryAddress,
-		Comment:         &order.Comment,
-		Items:           orderItems,
+		Comment:         order.Comment,
+		Items:           itemsResp,
+		CreatedAt:       order.CreatedAt,
 	}, nil
 }
 
@@ -109,14 +123,28 @@ func (s *orderService) GetByID(orderID uint) (*dto.OrderResponse, error) {
 		return nil, err
 	}
 
-	return &dto.OrderResponse{UserID: order.UserID,
-		Status:          order.Status,
+	itemsResp := make([]dto.OrderItemResponse, 0, len(order.Items))
+
+	for _, item := range order.Items {
+		itemsResp = append(itemsResp, dto.OrderItemResponse{
+			MedicineID:   item.MedicineID,
+			MedicineName: item.MedicineName,
+			Quantity:     item.Quantity,
+			PricePerUnit: item.PricePerUnit,
+			LineTotal:    item.LineTotal,
+		})
+	}
+
+	return &dto.OrderResponse{
+
+		Status:          string(order.Status),
 		TotalPrice:      order.TotalPrice,
 		DiscountTotal:   order.DiscountTotal,
 		FinalPrice:      order.FinalPrice,
 		DeliveryAddress: order.DeliveryAddress,
-		Comment:         &order.Comment,
-		Items:           order.Items,
+		Comment:         order.Comment,
+		Items:           itemsResp,
+		CreatedAt:       order.CreatedAt,
 		// Payments:        order.Payments,
 	}, nil
 
@@ -143,7 +171,6 @@ func (s *orderService) GetListOrders(userID uint) ([]dto.OrderShortResponse, err
 
 	for _, order := range orders {
 		shortListOrders = append(shortListOrders, dto.OrderShortResponse{
-			ID:         order.ID,
 			Status:     order.Status,
 			FinalPrice: order.FinalPrice,
 			CreatedAt:  order.CreatedAt,

@@ -24,11 +24,10 @@ type Order struct {
 
 type OrderItem struct {
 	gorm.Model
-	OrderID      uint `gorm:"index;not null"`
-	Order        *Order
-	MedicineID   uint `gorm:"index;not null"`
-	Medicine     *Medicine
-	MedicineName string `gorm:"type:varchar(255)"`
+	OrderID      uint   `gorm:"index;not null"`
+	Order        *Order `gorm:"constraint:OnDelete:CASCADE;"`
+	MedicineID   uint   `gorm:"index;not null"`
+	MedicineName string `gorm:"type:varchar(255);not null"`
 	Quantity     int    `gorm:"not null"`
 	PricePerUnit int64  `gorm:"not null"`
 	LineTotal    int64  `gorm:"not null"`
