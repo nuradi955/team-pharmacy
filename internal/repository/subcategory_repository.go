@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"team-pharmacy/internal/models"
 
 	"gorm.io/gorm"
@@ -53,5 +54,15 @@ func (r *gormSubcategoryRepository) Update(subcategory *models.Subcategory) erro
 }
 
 func (r *gormSubcategoryRepository) Delete(id uint) error {
-	return r.db.Delete(&models.Subcategory{}, id).Error
+	result := r.db.Delete(&models.Subcategory{}, id)
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return errors.New("subcategory not found")
+	}
+
+	return nil
 }
