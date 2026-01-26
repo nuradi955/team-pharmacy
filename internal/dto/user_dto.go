@@ -13,3 +13,10 @@ type UpdateUserRequest struct {
 	Phone          *string `json:"phone" binding:"omitempty,min=11"`
 	DefaultAddress *string `json:"default_address" binding:"omitempty,max=255"`
 }
+
+type CreateUserResponse struct {
+	FullName       string `json:"full_name"`
+	Email          string `json:"email"`
+	Phone          string `json:"phone"`
+	DefaultAddress string `json:"default_address"`
+}

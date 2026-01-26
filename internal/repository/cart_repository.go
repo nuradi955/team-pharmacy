@@ -48,7 +48,7 @@ func (r *gormCartRepository) GetCartWithItems(userID uint) (*models.Cart, error)
 
 	var cart models.Cart
 
-	if err := r.db.Preload("Items").Where("user_id = ?", userID).First(&cart).Error; err != nil {
+	if err := r.db.Preload("Items.Medicine").Where("user_id = ?", userID).First(&cart).Error; err != nil {
 		return nil, err
 	}
 	return &cart, nil
@@ -83,11 +83,11 @@ func (r *gormCartRepository) GetItem(cartID uint, medicineID uint) (*models.Cart
 		Where("cart_id = ? AND medicine_id = ?", cartID, medicineID).
 		First(&item).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, nil 
+		return nil, nil
 	}
 
 	if err != nil {
-		return nil, err 
+		return nil, err
 	}
 
 	return &item, nil

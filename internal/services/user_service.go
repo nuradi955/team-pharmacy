@@ -13,11 +13,11 @@ import (
 var ErrUserNotFound = errors.New("пользователь не найден")
 
 type UserService interface {
-	CreateUser(req dto.CreateUserRequest) (*models.User, error)
-	GetUserByID(id uint) (*models.User, error)
-	UpdateUser(id uint, req dto.UpdateUserRequest) (*models.User, error)
+	CreateUser(req dto.CreateUserRequest) (*dto.CreateUserResponse, error)
+	GetUserByID(id uint) (*dto.CreateUserResponse, error)
+	UpdateUser(id uint, req dto.UpdateUserRequest) (*dto.CreateUserResponse, error)
 	DeleteUser(id uint) error
-	ListUsers() ([]models.User, error)
+	ListUsers() ([]dto.CreateUserResponse, error)
 }
 
 type userService struct {
@@ -28,7 +28,7 @@ func NewUserService(users repository.UserRepository) UserService {
 	return &userService{users: users}
 }
 
-func (s *userService) CreateUser(req dto.CreateUserRequest) (*models.User, error) {
+func (s *userService) CreateUser(req dto.CreateUserRequest) (*dto.CreateUserResponse, error) {
 
 	user := &models.User{
 		FullName:       strings.TrimSpace(req.FullName),
@@ -40,10 +40,15 @@ func (s *userService) CreateUser(req dto.CreateUserRequest) (*models.User, error
 	if err := s.users.Create(user); err != nil {
 		return nil, err
 	}
-	return user, nil
+	return &dto.CreateUserResponse{
+		FullName:       user.FullName,
+		Email:          user.Email,
+		Phone:          user.Phone,
+		DefaultAddress: user.DefaultAddress,
+	}, nil
 }
 
-func (s *userService) GetUserByID(id uint) (*models.User, error) {
+func (s *userService) GetUserByID(id uint) (*dto.CreateUserResponse, error) {
 	if id == 0 {
 		return nil, errors.New("invalid id")
 	}
@@ -55,10 +60,15 @@ func (s *userService) GetUserByID(id uint) (*models.User, error) {
 		}
 		return nil, err
 	}
-	return user, nil
+	return &dto.CreateUserResponse{
+		FullName:       user.FullName,
+		Email:          user.Email,
+		Phone:          user.Phone,
+		DefaultAddress: user.DefaultAddress,
+	}, nil
 }
 
-func (s *userService) UpdateUser(id uint, req dto.UpdateUserRequest) (*models.User, error) {
+func (s *userService) UpdateUser(id uint, req dto.UpdateUserRequest) (*dto.CreateUserResponse, error) {
 	if id == 0 {
 		return nil, errors.New("invalid id")
 	}
@@ -77,7 +87,12 @@ func (s *userService) UpdateUser(id uint, req dto.UpdateUserRequest) (*models.Us
 	if err := s.users.Update(user); err != nil {
 		return nil, err
 	}
-	return user, nil
+	return &dto.CreateUserResponse{
+		FullName:       user.FullName,
+		Email:          user.Email,
+		Phone:          user.Phone,
+		DefaultAddress: user.DefaultAddress,
+	}, nil
 }
 
 func (s *userService) DeleteUser(id uint) error {
@@ -95,13 +110,24 @@ func (s *userService) DeleteUser(id uint) error {
 
 }
 
-func (s *userService) ListUsers() ([]models.User, error) {
+func (s *userService) ListUsers() ([]dto.CreateUserResponse, error) {
 	users, err := s.users.List()
 	if err != nil {
 		return nil, err
 	}
-	return users, nil
 
+	var usersResp []dto.CreateUserResponse
+
+	for _, user := range users {
+		usersResp = append(usersResp, dto.CreateUserResponse{
+			FullName:       user.FullName,
+			Email:          user.Email,
+			Phone:          user.Phone,
+			DefaultAddress: user.DefaultAddress,
+		})
+
+	}
+	return usersResp, nil
 }
 
 func (s *userService) applyUserUpdate(user *models.User, req dto.UpdateUserRequest) error {
