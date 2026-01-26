@@ -35,6 +35,9 @@ func (r *reviewService) Create(req dto.ReviewCreate) (*models.Review, error) {
 	if _, err := r.medicineRepo.GetByID(req.MedicineID); err != nil {
 		return nil, errors.New("Invalid medicine")
 	}
+    if req.Rating <1 || req.Rating>10 {
+		return nil,errors.New("value isnt correct")
+	}
 
 	text := strings.TrimSpace(req.Text)
 
@@ -63,7 +66,7 @@ func (r *reviewService) GetAllByUser(user_id uint) ([]models.Review, error) {
 	return r.reviewRepo.GetAllByUser(user_id)
 }
 func (r *reviewService) GetAllByMedicine(medicine_id uint) ([]models.Review, error) {
-	return r.reviewRepo.GetAllByUser(medicine_id)
+	return r.reviewRepo.GetAllByMedicine(medicine_id)
 }
 
 func (r *reviewService) GetByID(id uint) (*models.Review, error) {
