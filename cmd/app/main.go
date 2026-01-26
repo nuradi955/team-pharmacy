@@ -28,14 +28,17 @@ userRepo := repository.NewUserRepository(db)
 categoryRepo := repository.NewCategoryRepository(db)
 cartRepo := repository.NewCartRepository(db)
 medRepo := repository.NewMedicineRepository(db)
+reviewRepo := repository.NewReviewRepository(db)
 
 userService := services.NewUserService(userRepo)
 categoryService := services.NewCategoryService(categoryRepo)
 cartService := services.NewCartService(cartRepo, userRepo, medRepo)
+medService := services.NewMedicineService(medRepo,categoryRepo,subcategoryRepo)
+reviewService := services.NewReviewService(reviewRepo,medRepo,userRepo)
 
 router := gin.Default()
 
-transport.RegisterRoutes(router, userService, categoryService, cartService)
+transport.RegisterRoutes(router, userService, categoryService, cartService,medService,reviewService)
 
 if err := router.Run(); err != nil {
 	log.Fatalf("не удалось запустить HTTP-сервер: %v", err)

@@ -6,7 +6,7 @@ type Medicine struct {
 	gorm.Model
 	Name                 string  `json:"name" gorm:"not null,size:100"`
 	Description          string  `json:"description" gorm:"size:500"`
-	Price                int64   `json:"price" gorm:"not null"`
+	Price                float64 `json:"price" gorm:"not null"`
 	InStock              bool    `json:"in_stock" gorm:"not null"`
 	StockQuantity        uint    `json:"stock_quantity" gorm:"not null"`
 	CategoryID           *uint   `json:"category_id"`
@@ -15,7 +15,6 @@ type Medicine struct {
 	PrescriptionRequired bool    `json:"prescription_required"`
 	AvgRating            float64 `json:"avg_rating" gorm:"index,not null check:rating>=1 AND rating<=10"`
 
-	
 	Category    Category    `json:"category" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SETNULL;"`
 	Subcategory Subcategory `json:"subcategory" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SETNULL;"`
 }
