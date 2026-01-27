@@ -60,15 +60,17 @@ func main() {
 	medicRepo := repository.NewMedicineRepository(db)
 	orderRepo := repository.NewOrderRepository(db)
 	categoryRepo := repository.NewCategoryRepository(db)
+	// subCategory := repository.NewSubcategoryRepository(db)
 
 	userService := services.NewUserService(userRepo)
 	cartService := services.NewCartService(cartRepo, userRepo, medicRepo, logger)
-	orderServer := services.NewOrderService(orderRepo, userRepo, cartRepo, medicRepo)
+	orderService := services.NewOrderService(orderRepo, userRepo, cartRepo, medicRepo)
 	categoryService := services.NewCategoryService(categoryRepo)
+	// subCategoryService := services.NewSubcategoryService(subCategory, categoryRepo)
 
 	router := gin.Default()
 
-	transport.RegisterRoutes(router, userService, cartService, orderServer, categoryService, logger)
+	transport.RegisterRoutes(router, userService, cartService, orderService, categoryService, logger)
 
 	if err := router.Run(); err != nil {
 		log.Fatalf("не удалось запустить HTTP-сервер: %v", err)

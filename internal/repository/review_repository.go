@@ -12,6 +12,8 @@ type ReviewRepository interface {
 	GetAllByMedicine(medicineID uint) ([]models.Review, error)
 	GetByID(id uint) (*models.Review, error)
 	Delete(id uint) error
+	Update(review *models.Review)error
+	GetAvgRatingByMedicine(id uint)(float64,error)
 }
 type ReviewRepo struct {
 	db *gorm.DB
@@ -49,4 +51,14 @@ func (r *ReviewRepo) GetByID(id uint) (*models.Review, error) {
 }
 func (r *ReviewRepo) Delete(id uint) error {
 	return r.db.Delete(&models.Review{}, id).Error
+}
+
+func (r *ReviewRepo) Update(review *models.Review)error{
+return r.db.Save(review).Error
+}
+
+func (r *ReviewRepo) GetAvgRatingByMedicine(medicineID uint) (float64, error) {
+	var avg float64
+	err := r.db.Model(&models.Review{}).Where("medicine_id = ?", medicineID).Select("AVG(rating)").Scan(&avg).Error
+	return avg, err
 }

@@ -160,6 +160,5 @@ func (r *gormCartRepository) GetItem(cartID uint, medicineID uint) (*models.Cart
 		)
 		return nil, err
 	}
-
 	return &item, nil
 }

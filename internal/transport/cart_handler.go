@@ -31,7 +31,6 @@ func (h *CartHandler) RegisterRoutes(r *gin.Engine) {
 		cart.DELETE("", h.ClearCart)
 
 	}
-
 }
 
 func (h *CartHandler) GetCart(c *gin.Context) {
