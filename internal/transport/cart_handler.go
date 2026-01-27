@@ -69,7 +69,10 @@ func (h *CartHandler) GetCart(c *gin.Context) {
 func (h *CartHandler) CreateItem(c *gin.Context) {
 	userID, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {
-		h.logger.Warn("invalid  userID", "raw_value", c.Param("id"), "user_id", userID, "error", err)
+		h.logger.Warn("invalid  userID", 
+		"raw_value", c.Param("id"),  
+		"error", err,
+	)
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -137,7 +140,7 @@ func (h *CartHandler) UpdateItem(c *gin.Context) {
 	if err != nil {
 
 		h.logger.Warn("invalid itemID",
-			"raw_value", c.Param("id"),
+			"raw_value", c.Param("item_id"),
 			"user_id", userID, "error", err,
 		)
 
@@ -149,7 +152,6 @@ func (h *CartHandler) UpdateItem(c *gin.Context) {
 	if err := c.ShouldBindJSON(&req); err != nil {
 		h.logger.Warn("invalid request body",
 			"user_id", userID,
-			"quantity", req.Quantity,
 		)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -164,7 +166,7 @@ func (h *CartHandler) UpdateItem(c *gin.Context) {
 
 	if err != nil {
 		if errors.Is(err, errs.ErrUserNotFound) {
-			h.logger.Error("user not found",
+			h.logger.Warn("user not found",
 				"user_id", userID,
 				"error", err,
 			)
