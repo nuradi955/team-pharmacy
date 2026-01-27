@@ -14,29 +14,33 @@ import (
 func main() {
 	db := config.SetUpDatabaseConnection()
 
-	if err := db.AutoMigrate(&models.User{}, &models.Cart{}, &models.Medicine{}, &models.CartItem{}, &models.Order{}, &models.OrderItem{}, &models.Category{},
-		&models.Subcategory{}); err != nil {
-		log.Fatalf("не удалось выполнить миграции: %v", err)
-	}
-	userRepo := repository.NewUserRepository(db)
-	cartRepo := repository.NewCartRepository(db)
-	medicRepo := repository.NewMedicineRepository(db)
-	orderRepo := repository.NewOrderRepository(db)
-	categoryRepo := repository.NewCategoryRepository(db)
-	subcategoryRepo := repository.NewSubcategoryRepository(db)
+if err := db.AutoMigrate(
+	&models.User{},
+	&models.Category{},
+	&models.Cart{},
+	&models.Medicine{},
+	&models.CartItem{},
+); err != nil {
+	log.Fatalf("не удалось выполнить миграции: %v", err)
+}
 
-	userService := services.NewUserService(userRepo)
-	cartService := services.NewCartService(cartRepo, userRepo, medicRepo)
-	orderServer := services.NewOrderService(orderRepo, userRepo, cartRepo, medicRepo)
-	categoryService := services.NewCategoryService(categoryRepo)
-	subcategoryService := services.NewSubcategoryService(subcategoryRepo, categoryRepo)
+userRepo := repository.NewUserRepository(db)
+categoryRepo := repository.NewCategoryRepository(db)
+cartRepo := repository.NewCartRepository(db)
+medRepo := repository.NewMedicineRepository(db)
+reviewRepo := repository.NewReviewRepository(db)
 
-	router := gin.Default()
+userService := services.NewUserService(userRepo)
+categoryService := services.NewCategoryService(categoryRepo)
+cartService := services.NewCartService(cartRepo, userRepo, medRepo)
+medService := services.NewMedicineService(medRepo,categoryRepo,subcategoryRepo)
+reviewService := services.NewReviewService(reviewRepo,medRepo,userRepo)
 
-	transport.RegisterRoutes(router, userService, cartService, orderServer, categoryService,
-		subcategoryService)
+router := gin.Default()
 
-	if err := router.Run(); err != nil {
-		log.Fatalf("не удалось запустить HTTP-сервер: %v", err)
-	}
+transport.RegisterRoutes(router, userService, categoryService, cartService,medService,reviewService)
+
+if err := router.Run(); err != nil {
+	log.Fatalf("не удалось запустить HTTP-сервер: %v", err)
+}
 }

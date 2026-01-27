@@ -17,8 +17,8 @@ type MedicineService interface {
 }
 
 type medicineService struct {
-	MedicineRepo repository.MedicineRepository
-	CategoryRP repository.CategoryRepository
+	MedicineRepo  repository.MedicineRepository
+	CategoryRP    repository.CategoryRepository
 	SubCategoryRP repository.SubcategoryRepository
 }
 
@@ -28,11 +28,11 @@ func NewMedicineService(medicineRepo repository.MedicineRepository, categoryRepo
 
 func (m *medicineService) Create(req dto.MedicineCreate) (*models.Medicine, error) {
 	// Cheking Category and Subcategory
-	_,err := m.CategoryRP.GetByID(req.CategoryID)
+	_, err := m.CategoryRP.GetByID(*req.CategoryID)
 	if err != nil {
 		return nil, errors.New("Invalid Category")
 	}
-	_,err = m.SubCategoryRP.GetByID(req.SubcategoryID)
+	_, err = m.SubCategoryRP.GetByID(req.SubcategoryID)
 	if err != nil {
 		return nil, errors.New("Invalid Subcategory")
 	}
@@ -113,7 +113,7 @@ func (m *medicineService) Update(req dto.MedicineUpdate, id uint) error {
 	}
 
 	if req.CategoryID != nil {
-		if err := m.CategoryRP.GetByID(*req.CategoryID); err != nil {
+		if _, err := m.CategoryRP.GetByID(*req.CategoryID); err != nil {
 			return errors.New("CategoryID isnt Correct")
 		}
 		medicine.CategoryID = req.CategoryID
@@ -124,21 +124,22 @@ func (m *medicineService) Update(req dto.MedicineUpdate, id uint) error {
 		if err != nil {
 			return errors.New("Subcategory isnt correct")
 		}
-		if medicine.CategoryID == nil{
+		if medicine.CategoryID == nil {
 			return errors.New("Error:CategoryID is nill")
 		}
 		if sub.CategoryID != *medicine.CategoryID {
 			return errors.New("Subcategory dont have Correct category")
 		}
-		
-    medicine.SubcategoryID = req.SubcategoryID
-		
+
+		medicine.SubcategoryID = req.SubcategoryID
+
 	}
 
-    if req.Description != nil{
-	medicine.Description = *req.Description}
-	
-	if req.PrescriptionRequired != nil{
+	if req.Description != nil {
+		medicine.Description = *req.Description
+	}
+
+	if req.PrescriptionRequired != nil {
 		medicine.PrescriptionRequired = *req.PrescriptionRequired
 	}
 
@@ -148,15 +149,13 @@ func (m *medicineService) Update(req dto.MedicineUpdate, id uint) error {
 	return nil
 }
 
-func (m *medicineService)Delete(id uint)error{
+func (m *medicineService) Delete(id uint) error {
 	if id == 0 {
 		return errors.New("Id cant be zero")
 	}
-	_,err := m.MedicineRepo.GetByID(id)
-	if err != nil{
+	_, err := m.MedicineRepo.GetByID(id)
+	if err != nil {
 		return errors.New("this id isnt valid")
 	}
 	return m.MedicineRepo.Delete(id)
 }
-
-
