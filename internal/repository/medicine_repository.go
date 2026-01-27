@@ -6,8 +6,6 @@ import (
 	"gorm.io/gorm"
 )
 
-
-
 type MedicineRepository interface {
 	Create(medicine *models.Medicine) error
 	GetAll() ([]models.Medicine, error)

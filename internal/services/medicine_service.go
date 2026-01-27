@@ -32,7 +32,7 @@ func (m *medicineService) Create(req dto.MedicineCreate) (*models.Medicine, erro
 	if err != nil {
 		return nil, errors.New("Invalid Category")
 	}
-	_, err = m.SubCategoryRP.GetByID(req.SubcategoryID)
+	_, err = m.SubCategoryRP.GetByID(*req.SubcategoryID)
 	if err != nil {
 		return nil, errors.New("Invalid Subcategory")
 	}

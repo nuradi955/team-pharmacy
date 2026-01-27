@@ -2,6 +2,8 @@ package main
 
 import (
 	"log"
+	"log/slog"
+	"os"
 	"team-pharmacy/internal/config"
 	"team-pharmacy/internal/models"
 	"team-pharmacy/internal/repository"
@@ -11,36 +13,66 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func setupLogger() *slog.Logger {
+	level := slog.LevelInfo
+
+	if lvl := os.Getenv("LOG_LEVEL"); lvl != "" {
+		switch lvl {
+		case "debug":
+			level = slog.LevelDebug
+		case "info":
+			level = slog.LevelInfo
+		case "warm":
+			level = slog.LevelWarn
+		case "error":
+			level = slog.LevelError
+		}
+	}
+	handler := slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+		Level: level,
+	})
+	logger := slog.New(handler)
+	slog.SetDefault(logger)
+	return logger
+}
+
 func main() {
+
+	logger := setupLogger()
+	addr := ":8080"
+	env := os.Getenv("APP_ENV")
+	if env != "" {
+		env = "local"
+	}
+
+	logger.Info("server started",
+		slog.String("addr", addr),
+		slog.String("env", env),
+	)
+
 	db := config.SetUpDatabaseConnection()
 
-if err := db.AutoMigrate(
-	&models.User{},
-	&models.Category{},
-	&models.Cart{},
-	&models.Medicine{},
-	&models.CartItem{},
-); err != nil {
-	log.Fatalf("не удалось выполнить миграции: %v", err)
-}
+	if err := db.AutoMigrate(&models.User{}, &models.Cart{}, &models.Medicine{}, &models.CartItem{}, &models.Order{}, &models.OrderItem{}); err != nil {
+		log.Fatalf("не удалось выполнить миграции: %v", err)
+	}
+	userRepo := repository.NewUserRepository(db)
+	cartRepo := repository.NewCartRepository(db, logger)
+	medicRepo := repository.NewMedicineRepository(db)
+	orderRepo := repository.NewOrderRepository(db)
+	categoryRepo := repository.NewCategoryRepository(db)
+	// subCategory := repository.NewSubcategoryRepository(db)
 
-userRepo := repository.NewUserRepository(db)
-categoryRepo := repository.NewCategoryRepository(db)
-cartRepo := repository.NewCartRepository(db)
-medRepo := repository.NewMedicineRepository(db)
-reviewRepo := repository.NewReviewRepository(db)
+	userService := services.NewUserService(userRepo)
+	cartService := services.NewCartService(cartRepo, userRepo, medicRepo, logger)
+	orderService := services.NewOrderService(orderRepo, userRepo, cartRepo, medicRepo)
+	categoryService := services.NewCategoryService(categoryRepo)
+	// subCategoryService := services.NewSubcategoryService(subCategory, categoryRepo)
 
-userService := services.NewUserService(userRepo)
-categoryService := services.NewCategoryService(categoryRepo)
-cartService := services.NewCartService(cartRepo, userRepo, medRepo)
-medService := services.NewMedicineService(medRepo,categoryRepo,subcategoryRepo)
-reviewService := services.NewReviewService(reviewRepo,medRepo,userRepo)
+	router := gin.Default()
 
-router := gin.Default()
+	transport.RegisterRoutes(router, userService, cartService, orderService, categoryService, logger)
 
-transport.RegisterRoutes(router, userService, categoryService, cartService,medService,reviewService)
-
-if err := router.Run(); err != nil {
-	log.Fatalf("не удалось запустить HTTP-сервер: %v", err)
-}
+	if err := router.Run(); err != nil {
+		log.Fatalf("не удалось запустить HTTP-сервер: %v", err)
+	}
 }
