@@ -69,10 +69,10 @@ func (h *CartHandler) GetCart(c *gin.Context) {
 func (h *CartHandler) CreateItem(c *gin.Context) {
 	userID, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {
-		h.logger.Warn("invalid  userID", 
-		"raw_value", c.Param("id"),  
-		"error", err,
-	)
+		h.logger.Warn("invalid  userID",
+			"param", c.Param("id"),
+			"error", err,
+		)
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -129,7 +129,7 @@ func (h *CartHandler) UpdateItem(c *gin.Context) {
 
 		h.logger.Warn("invalid  userID",
 			"raw_value", c.Param("id"),
-			"user_id", userID, "error", err,
+			"error", err,
 		)
 
 		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid user id"})
@@ -223,7 +223,7 @@ func (h *CartHandler) DeleteItem(c *gin.Context) {
 	)
 	if err := h.service.DeleteItem(uint(userID), uint(itemID)); err != nil {
 		if errors.Is(err, errs.ErrUserNotFound) || errors.Is(err, errs.ErrItemNotFound) {
-			h.logger.Error("resource not found",
+			h.logger.Warn("resource not found",
 				"user_id", userID,
 				"item_id", itemID,
 				"error", err,
