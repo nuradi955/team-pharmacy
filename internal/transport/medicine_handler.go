@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 	"team-pharmacy/internal/dto"
+	"team-pharmacy/internal/logger"
 	"team-pharmacy/internal/services"
 
 	"github.com/gin-gonic/gin"
@@ -16,34 +17,45 @@ type MedicineHandler struct {
 func NewMedicineHandler(service services.MedicineService) *MedicineHandler {
 	return &MedicineHandler{service: service}
 }
-func (m *MedicineHandler) RegisterRoutes(r *gin.Engine){
+func (m *MedicineHandler) RegisterRoutes(r *gin.Engine) {
 	medicines := r.Group("/medicines")
 	{
-	medicines.GET("",m.GetAll)
-	medicines.POST("",m.Create)
-	medicines.GET("/:id",m.GetByID)
-	medicines.PATCH("/:id",m.Update)
-	medicines.DELETE("/:id",m.Delete)
+		medicines.GET("", m.GetAll)
+		medicines.POST("", m.Create)
+		medicines.GET("/:id", m.GetByID)
+		medicines.PATCH("/:id", m.Update)
+		medicines.DELETE("/:id", m.Delete)
 	}
 }
 func (m *MedicineHandler) Create(ctx *gin.Context) {
 	var req dto.MedicineCreate
 	err := ctx.ShouldBindJSON(&req)
 	if err != nil {
+		logger.Log.Error(
+			"Hadnler:Create medicine first step error",
+			"error", err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	medicine, err := m.service.Create(req)
 	if err != nil {
+		logger.Log.Error(
+			"Handler:Create medicine second step error",
+			"error", err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	logger.Log.Info(
+		"Handler:Create medicine correct",
+		"medicine", medicine,
+	)
 	ctx.JSON(http.StatusCreated, medicine)
 }
 
 func (m *MedicineHandler) GetAll(ctx *gin.Context) {
 	medicines, err := m.service.GetAll()
 	if err != nil {
+		
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -96,7 +108,7 @@ func (m *MedicineHandler) Delete(ctx *gin.Context) {
 		return
 	}
 	if _, err := m.service.GetByID(uint(id)); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error":"this medicine isnt exist"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "this medicine isnt exist"})
 		return
 	}
 	if err := m.service.Delete(uint(id)); err != nil {

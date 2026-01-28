@@ -6,7 +6,7 @@ type Medicine struct {
 	gorm.Model
 	Name                 string  `json:"name" gorm:"not null,size:100"`
 	Description          string  `json:"description" gorm:"size:500"`
-	Price                float64 `json:"price" gorm:"not null"`
+	Price                uint64 `json:"price" gorm:"not null"`
 	InStock              bool    `json:"in_stock" gorm:"not null"`
 	StockQuantity        uint    `json:"stock_quantity" gorm:"not null"`
 	CategoryID           *uint   `json:"category_id"`
