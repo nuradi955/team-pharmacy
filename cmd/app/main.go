@@ -38,6 +38,7 @@ func setupLogger() *slog.Logger {
 		0644,
 	)
 	if err != nil {
+		defer logFile.Close()
 		panic(err)
 	}
 
