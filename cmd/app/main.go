@@ -22,13 +22,27 @@ func setupLogger() *slog.Logger {
 			level = slog.LevelDebug
 		case "info":
 			level = slog.LevelInfo
-		case "warm":
+		case "warn":
 			level = slog.LevelWarn
 		case "error":
 			level = slog.LevelError
 		}
 	}
-	handler := slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+	if err := os.MkdirAll("logs", 0755); err != nil {
+		panic(err)
+	}
+
+	logFile, err := os.OpenFile(
+		"logs/app.log",
+		os.O_CREATE|os.O_WRONLY|os.O_APPEND,
+		0644,
+	)
+	if err != nil {
+		defer logFile.Close()
+		panic(err)
+	}
+
+	handler := slog.NewTextHandler(logFile, &slog.HandlerOptions{
 		Level: level,
 	})
 	logger := slog.New(handler)
@@ -41,7 +55,7 @@ func main() {
 	logger := setupLogger()
 	addr := ":8080"
 	env := os.Getenv("APP_ENV")
-	if env != "" {
+	if env == "" {
 		env = "local"
 	}
 
@@ -60,17 +74,17 @@ func main() {
 	medicRepo := repository.NewMedicineRepository(db)
 	orderRepo := repository.NewOrderRepository(db)
 	categoryRepo := repository.NewCategoryRepository(db)
-	// subCategory := repository.NewSubcategoryRepository(db)
+	subCategory := repository.NewSubcategoryRepository(db)
 
 	userService := services.NewUserService(userRepo)
 	cartService := services.NewCartService(cartRepo, userRepo, medicRepo, logger)
 	orderService := services.NewOrderService(orderRepo, userRepo, cartRepo, medicRepo)
 	categoryService := services.NewCategoryService(categoryRepo)
-	// subCategoryService := services.NewSubcategoryService(subCategory, categoryRepo)
+	subCategoryService := services.NewSubcategoryService(subCategory, categoryRepo)
 
 	router := gin.Default()
 
-	transport.RegisterRoutes(router, userService, cartService, orderService, categoryService, logger)
+	transport.RegisterRoutes(router, userService, cartService, orderService, categoryService, subCategoryService, logger)
 
 	if err := router.Run(); err != nil {
 		log.Fatalf("не удалось запустить HTTP-сервер: %v", err)

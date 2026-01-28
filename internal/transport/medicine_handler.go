@@ -16,14 +16,14 @@ type MedicineHandler struct {
 func NewMedicineHandler(service services.MedicineService) *MedicineHandler {
 	return &MedicineHandler{service: service}
 }
-func (m *MedicineHandler) RegisterRoutes(r *gin.Engine){
+func (m *MedicineHandler) RegisterRoutes(r *gin.Engine) {
 	medicines := r.Group("/medicines")
 	{
-	medicines.GET("",m.GetAll)
-	medicines.POST("",m.Create)
-	medicines.GET("/:id",m.GetByID)
-	medicines.PATCH("/:id",m.Update)
-	medicines.DELETE("/:id",m.Delete)
+		medicines.GET("", m.GetAll)
+		medicines.POST("", m.Create)
+		medicines.GET("/:id", m.GetByID)
+		medicines.PATCH("/:id", m.Update)
+		medicines.DELETE("/:id", m.Delete)
 	}
 }
 func (m *MedicineHandler) Create(ctx *gin.Context) {
@@ -96,7 +96,7 @@ func (m *MedicineHandler) Delete(ctx *gin.Context) {
 		return
 	}
 	if _, err := m.service.GetByID(uint(id)); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error":"this medicine isnt exist"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "this medicine isnt exist"})
 		return
 	}
 	if err := m.service.Delete(uint(id)); err != nil {
