@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"net/http"
 	"team-pharmacy/internal/config"
 	"team-pharmacy/internal/logger"
 	"team-pharmacy/internal/models"
@@ -33,7 +32,7 @@ categoryRepo := repository.NewCategoryRepository(db)
 cartRepo := repository.NewCartRepository(db)
 medRepo := repository.NewMedicineRepository(db)
 reviewRepo := repository.NewReviewRepository(db)
-subcategoryRepo := repository.SubcategoryRepository(db)
+subcategoryRepo := repository.NewSubcategoryRepository(db)
 
 userService := services.NewUserService(userRepo)
 categoryService := services.NewCategoryService(categoryRepo)
@@ -43,7 +42,14 @@ reviewService := services.NewReviewService(reviewRepo,medRepo,userRepo)
 
 router := gin.Default()
 
-transport.RegisterRoutes(router, userService,medService, cartService,categoryService,reviewService)
+transport.RegisterRoutes(
+	router, 
+	userService,
+	cartService,
+	categoryService,
+	medService,
+	reviewService,
+)
 
 if err := router.Run(); err != nil {
 	log.Fatalf("не удалось запустить HTTP-сервер: %v", err)
