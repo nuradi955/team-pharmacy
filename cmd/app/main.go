@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"os"
 	"team-pharmacy/internal/config"
+	"team-pharmacy/internal/logger"
 	"team-pharmacy/internal/models"
 	"team-pharmacy/internal/repository"
 	"team-pharmacy/internal/services"
@@ -13,24 +14,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func setupLogger() *slog.Logger {
-	level := slog.LevelInfo
+func main() {
+    logger.Init()
 
-	if lvl := os.Getenv("LOG_LEVEL"); lvl != "" {
-		switch lvl {
-		case "debug":
-			level = slog.LevelDebug
-		case "info":
-			level = slog.LevelInfo
-		case "warn":
-			level = slog.LevelWarn
-		case "error":
-			level = slog.LevelError
-		}
-	}
-	if err := os.MkdirAll("logs", 0755); err != nil {
-		panic(err)
-	}
+	db := config.SetUpDatabaseConnection()
 
 	logFile, err := os.OpenFile(
 		"logs/app.log",
@@ -50,7 +37,12 @@ func setupLogger() *slog.Logger {
 	return logger
 }
 
-func main() {
+userRepo := repository.NewUserRepository(db)
+categoryRepo := repository.NewCategoryRepository(db)
+cartRepo := repository.NewCartRepository(db)
+medRepo := repository.NewMedicineRepository(db)
+reviewRepo := repository.NewReviewRepository(db)
+subcategoryRepo := repository.NewSubcategoryRepository(db)
 
 	logger := setupLogger()
 	addr := ":8080"
@@ -64,7 +56,14 @@ func main() {
 		slog.String("env", env),
 	)
 
-	db := config.SetUpDatabaseConnection()
+transport.RegisterRoutes(
+	router, 
+	userService,
+	cartService,
+	categoryService,
+	medService,
+	reviewService,
+)
 
 	if err := db.AutoMigrate(&models.User{}, &models.Cart{}, &models.Medicine{}, &models.CartItem{}, &models.Order{}, &models.OrderItem{}); err != nil {
 		log.Fatalf("не удалось выполнить миграции: %v", err)

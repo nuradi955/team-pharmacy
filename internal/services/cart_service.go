@@ -313,8 +313,8 @@ func (s *cartService) UpdateItem(userID, itemID uint, req *dto.UpdateCartItemReq
 		return nil, errors.New("stock limit exceeded")
 	}
 
-	lineTotal := int64(req.Quantity) * medicine.Price
-	newItem := &dto.CartItemResponse{
+	lineTotal := int64(req.Quantity) * int64(medicine.Price)
+	newItem := dto.CartItemResponse{
 		ItemID:       item.ID,
 		MedicineID:   item.MedicineID,
 		Quantity:     req.Quantity,

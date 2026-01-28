@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 	"team-pharmacy/internal/dto"
+	"team-pharmacy/internal/logger"
 	"team-pharmacy/internal/services"
 
 	"github.com/gin-gonic/gin"
@@ -30,20 +31,31 @@ func (m *MedicineHandler) Create(ctx *gin.Context) {
 	var req dto.MedicineCreate
 	err := ctx.ShouldBindJSON(&req)
 	if err != nil {
+		logger.Log.Error(
+			"Hadnler:Create medicine first step error",
+			"error", err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	medicine, err := m.service.Create(req)
 	if err != nil {
+		logger.Log.Error(
+			"Handler:Create medicine second step error",
+			"error", err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	logger.Log.Info(
+		"Handler:Create medicine correct",
+		"medicine", medicine,
+	)
 	ctx.JSON(http.StatusCreated, medicine)
 }
 
 func (m *MedicineHandler) GetAll(ctx *gin.Context) {
 	medicines, err := m.service.GetAll()
 	if err != nil {
+		
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
