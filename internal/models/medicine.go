@@ -15,8 +15,8 @@ type Medicine struct {
 	PrescriptionRequired bool    `json:"prescription_required"`
 	AvgRating            float64 `json:"avg_rating" gorm:"index,not null check:rating>=1 AND rating<=10"`
 
-	Category    Category    `json:"category" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SETNULL;"`
-	Subcategory Subcategory `json:"subcategory" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SETNULL;"`
+	Category    Category    `json:"category" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	Subcategory Subcategory `json:"subcategory" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 func (m *Medicine) BeforeSave(tx *gorm.DB) error {

@@ -1,0 +1,63 @@
+{"time":"2026-01-28T11:23:57.754878+03:00","level":"INFO","msg":"server started","addr":":8080","env":""}
+{"time":"2026-01-28T11:24:27.350833+03:00","level":"INFO","msg":"server started","addr":":8080","env":"local"}
+{"time":"2026-01-28T11:24:47.434503+03:00","level":"INFO","msg":"server started","addr":":8080","env":"local"}
+{"time":"2026-01-28T11:24:52.258168+03:00","level":"INFO","msg":"incoming request","layer":"transport","entity":"cart","method":"POST","path":"/users/:id/cart/items","user_id":8,"medicine_id":4,"quantity":1}
+{"time":"2026-01-28T11:24:52.25853+03:00","level":"INFO","msg":"add item to cart started","layer":"service","entity":"cart","user_id":8,"medicine_id":4,"quantity":1}
+{"time":"2026-01-28T11:24:52.26076+03:00","level":"WARN","msg":"user not found","layer":"service","entity":"cart","user_id":8}
+{"time":"2026-01-28T11:24:52.260826+03:00","level":"WARN","msg":"user not found","layer":"transport","entity":"cart","user_id":8}
+time=2026-01-28T11:28:50.318+03:00 level=INFO msg="server started" addr=:8080 env=local
+time=2026-01-28T11:29:34.595+03:00 level=INFO msg="incoming request" layer=transport entity=cart method=GET user_id=3
+time=2026-01-28T11:29:34.595+03:00 level=INFO msg="get cart with items started" layer=service entity=cart user_id=3
+time=2026-01-28T11:29:34.596+03:00 level=WARN msg="user not found" layer=service entity=cart user_id=3
+time=2026-01-28T11:29:34.596+03:00 level=WARN msg="user not found" layer=transport entity=cart user_id=3
+time=2026-01-28T11:29:36.353+03:00 level=INFO msg="incoming request" layer=transport entity=cart method=GET user_id=3
+time=2026-01-28T11:29:36.354+03:00 level=INFO msg="get cart with items started" layer=service entity=cart user_id=3
+time=2026-01-28T11:29:36.355+03:00 level=WARN msg="user not found" layer=service entity=cart user_id=3
+time=2026-01-28T11:29:36.355+03:00 level=WARN msg="user not found" layer=transport entity=cart user_id=3
+time=2026-01-28T11:31:38.236+03:00 level=INFO msg="incoming request" layer=transport entity=cart method=GET user_id=3
+time=2026-01-28T11:31:38.236+03:00 level=INFO msg="get cart with items started" layer=service entity=cart user_id=3
+time=2026-01-28T11:31:38.238+03:00 level=WARN msg="user not found" layer=service entity=cart user_id=3
+time=2026-01-28T11:31:38.238+03:00 level=WARN msg="user not found" layer=transport entity=cart user_id=3
+time=2026-01-28T11:40:17.680+03:00 level=INFO msg="incoming request" layer=transport entity=cart method=GET user_id=1
+time=2026-01-28T11:40:17.681+03:00 level=INFO msg="get cart with items started" layer=service entity=cart user_id=1
+time=2026-01-28T11:40:17.684+03:00 level=ERROR msg=repo.cart.get_with_items layer=repository entity=cart user_id=1 error="record not found"
+time=2026-01-28T11:40:17.684+03:00 level=ERROR msg="failed to get cart with items" layer=service entity=cart user_id=1 error="record not found"
+time=2026-01-28T11:40:17.684+03:00 level=ERROR msg="failed to get cart" layer=transport entity=cart user_id=1 error="record not found"
+time=2026-01-28T11:46:23.113+03:00 level=INFO msg="incoming request" layer=transport entity=cart method=POST path=/users/:id/cart/items user_id=1 medicine_id=4 quantity=1
+time=2026-01-28T11:46:23.113+03:00 level=INFO msg="add item to cart started" layer=service entity=cart user_id=1 medicine_id=4 quantity=1
+time=2026-01-28T11:46:23.116+03:00 level=INFO msg="medicine not found" layer=service entity=cart medicine_id=4
+time=2026-01-28T11:46:23.117+03:00 level=ERROR msg="failed to add item to cart" layer=transport entity=cart user_id=1 medicine_id=4 quantity=1
+time=2026-01-28T11:46:24.089+03:00 level=INFO msg="incoming request" layer=transport entity=cart method=POST path=/users/:id/cart/items user_id=1 medicine_id=4 quantity=1
+time=2026-01-28T11:46:24.089+03:00 level=INFO msg="add item to cart started" layer=service entity=cart user_id=1 medicine_id=4 quantity=1
+time=2026-01-28T11:46:24.091+03:00 level=INFO msg="medicine not found" layer=service entity=cart medicine_id=4
+time=2026-01-28T11:46:24.091+03:00 level=ERROR msg="failed to add item to cart" layer=transport entity=cart user_id=1 medicine_id=4 quantity=1
+time=2026-01-28T11:46:28.914+03:00 level=INFO msg="incoming request" layer=transport entity=cart method=POST path=/users/:id/cart/items user_id=1 medicine_id=1 quantity=1
+time=2026-01-28T11:46:28.914+03:00 level=INFO msg="add item to cart started" layer=service entity=cart user_id=1 medicine_id=1 quantity=1
+time=2026-01-28T11:46:28.916+03:00 level=INFO msg="medicine not found" layer=service entity=cart medicine_id=1
+time=2026-01-28T11:46:28.916+03:00 level=ERROR msg="failed to add item to cart" layer=transport entity=cart user_id=1 medicine_id=1 quantity=1
+time=2026-01-28T11:46:29.757+03:00 level=INFO msg="incoming request" layer=transport entity=cart method=POST path=/users/:id/cart/items user_id=1 medicine_id=1 quantity=1
+time=2026-01-28T11:46:29.757+03:00 level=INFO msg="add item to cart started" layer=service entity=cart user_id=1 medicine_id=1 quantity=1
+time=2026-01-28T11:46:29.758+03:00 level=INFO msg="medicine not found" layer=service entity=cart medicine_id=1
+time=2026-01-28T11:46:29.758+03:00 level=ERROR msg="failed to add item to cart" layer=transport entity=cart user_id=1 medicine_id=1 quantity=1
+time=2026-01-28T11:46:33.553+03:00 level=INFO msg="incoming request" layer=transport entity=cart method=POST path=/users/:id/cart/items user_id=1 medicine_id=21 quantity=1
+time=2026-01-28T11:46:33.553+03:00 level=INFO msg="add item to cart started" layer=service entity=cart user_id=1 medicine_id=21 quantity=1
+time=2026-01-28T11:46:33.559+03:00 level=INFO msg="cart item created" layer=service entity=cart cart_id=1 medicine_id=21
+time=2026-01-28T11:46:33.559+03:00 level=INFO msg="get cart with items started" layer=service entity=cart user_id=1
+time=2026-01-28T11:46:33.561+03:00 level=INFO msg="get cart with items finished" layer=service entity=cart user_id=1 items_count=1 total_price=15000
+time=2026-01-28T11:46:33.561+03:00 level=INFO msg="item added to cart" layer=transport entity=cart user_id=1 medicine_id=21 quantity=1
+time=2026-01-28T11:46:38.674+03:00 level=INFO msg="incoming request" layer=transport entity=cart method=POST path=/users/:id/cart/items user_id=1 medicine_id=23 quantity=1
+time=2026-01-28T11:46:38.674+03:00 level=INFO msg="add item to cart started" layer=service entity=cart user_id=1 medicine_id=23 quantity=1
+time=2026-01-28T11:46:38.677+03:00 level=INFO msg="cart item created" layer=service entity=cart cart_id=1 medicine_id=23
+time=2026-01-28T11:46:38.677+03:00 level=INFO msg="get cart with items started" layer=service entity=cart user_id=1
+time=2026-01-28T11:46:38.678+03:00 level=INFO msg="get cart with items finished" layer=service entity=cart user_id=1 items_count=2 total_price=60000
+time=2026-01-28T11:46:38.678+03:00 level=INFO msg="item added to cart" layer=transport entity=cart user_id=1 medicine_id=23 quantity=1
+time=2026-01-28T11:46:44.241+03:00 level=INFO msg="incoming request" layer=transport entity=cart method=POST path=/users/:id/cart/items user_id=1 medicine_id=26 quantity=1
+time=2026-01-28T11:46:44.241+03:00 level=INFO msg="add item to cart started" layer=service entity=cart user_id=1 medicine_id=26 quantity=1
+time=2026-01-28T11:46:44.242+03:00 level=INFO msg="cart item created" layer=service entity=cart cart_id=1 medicine_id=26
+time=2026-01-28T11:46:44.242+03:00 level=INFO msg="get cart with items started" layer=service entity=cart user_id=1
+time=2026-01-28T11:46:44.243+03:00 level=INFO msg="get cart with items finished" layer=service entity=cart user_id=1 items_count=3 total_price=78000
+time=2026-01-28T11:46:44.243+03:00 level=INFO msg="item added to cart" layer=transport entity=cart user_id=1 medicine_id=26 quantity=1
+time=2026-01-28T11:47:48.962+03:00 level=INFO msg="incoming request" layer=transport entity=cart method=POST path=/users/:id/cart/items user_id=10 medicine_id=26 quantity=1
+time=2026-01-28T11:47:48.962+03:00 level=INFO msg="add item to cart started" layer=service entity=cart user_id=10 medicine_id=26 quantity=1
+time=2026-01-28T11:47:48.963+03:00 level=WARN msg="user not found" layer=service entity=cart user_id=10
+time=2026-01-28T11:47:48.963+03:00 level=WARN msg="user not found" layer=transport entity=cart user_id=10
