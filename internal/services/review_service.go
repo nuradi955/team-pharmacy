@@ -23,20 +23,20 @@ type reviewService struct {
 	userRepo     repository.UserRepository
 }
 
-func NewReviewService(reviewRepo repository.ReviewRepository,medicineRepo repository.MedicineRepository,userRepo repository.UserRepository,) ReviewService {
-	return &reviewService{reviewRepo:reviewRepo,medicineRepo:medicineRepo,userRepo:userRepo,}
+func NewReviewService(reviewRepo repository.ReviewRepository, medicineRepo repository.MedicineRepository, userRepo repository.UserRepository) ReviewService {
+	return &reviewService{reviewRepo: reviewRepo, medicineRepo: medicineRepo, userRepo: userRepo}
 }
 
 func (r *reviewService) Create(req dto.ReviewCreate) (*models.Review, error) {
 	if _, err := r.userRepo.GetByID(req.UserID); err != nil {
-		return nil, errors.New("Invalid user")
+		return nil, errors.New("invalid user")
 	}
 
 	if _, err := r.medicineRepo.GetByID(req.MedicineID); err != nil {
-		return nil, errors.New("Invalid medicine")
+		return nil, errors.New("invalid medicine")
 	}
-    if req.Rating <1 || req.Rating>10 {
-		return nil,errors.New("value isnt correct")
+	if req.Rating < 1 || req.Rating > 10 {
+		return nil, errors.New("value isnt correct")
 	}
 
 	text := strings.TrimSpace(req.Text)
@@ -51,15 +51,15 @@ func (r *reviewService) Create(req dto.ReviewCreate) (*models.Review, error) {
 	if err := r.reviewRepo.Create(review); err != nil {
 		return nil, err
 	}
-	//  Нужно тут написать обновление среднего рейтинга 
-avg,err := r.reviewRepo.GetAvgRatingByMedicine(review.MedicineID);
+	//  Нужно тут написать обновление среднего рейтинга
+	avg, err := r.reviewRepo.GetAvgRatingByMedicine(review.MedicineID)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
-	if err:= r.medicineRepo.UpdateAvgRating(review.MedicineID,avg);err != nil{
-		return nil,err
+	if err := r.medicineRepo.UpdateAvgRating(review.MedicineID, avg); err != nil {
+		return nil, err
 	}
-	return review,nil 
+	return review, nil
 }
 
 func (r *reviewService) GetAllByUser(user_id uint) ([]models.Review, error) {
@@ -85,22 +85,20 @@ func (r *reviewService) Update(req dto.ReviewUpdate, id uint) error {
 	if req.Rating != nil {
 		review.Rating = *req.Rating
 	}
-	
 
 	if req.Text != nil {
 		review.Text = strings.TrimSpace(*req.Text)
 	}
 
-	if err := r.reviewRepo.Update(review); 
-	err != nil {
+	if err := r.reviewRepo.Update(review); err != nil {
 		return err
 	}
 
-	avg,err := r.reviewRepo.GetAvgRatingByMedicine(review.MedicineID);
+	avg, err := r.reviewRepo.GetAvgRatingByMedicine(review.MedicineID)
 	if err != nil {
 		return err
 	}
-	if err:= r.medicineRepo.UpdateAvgRating(review.MedicineID,avg);err != nil{
+	if err := r.medicineRepo.UpdateAvgRating(review.MedicineID, avg); err != nil {
 		return err
 	}
 
@@ -117,11 +115,11 @@ func (r *reviewService) Delete(id uint) error {
 		return err
 	}
 
-	avg,err := r.reviewRepo.GetAvgRatingByMedicine(review.MedicineID);
+	avg, err := r.reviewRepo.GetAvgRatingByMedicine(review.MedicineID)
 	if err != nil {
 		return err
 	}
-	if err:= r.medicineRepo.UpdateAvgRating(review.MedicineID,avg);err != nil{
+	if err := r.medicineRepo.UpdateAvgRating(review.MedicineID, avg); err != nil {
 		return err
 	}
 

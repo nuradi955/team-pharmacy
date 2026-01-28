@@ -10,6 +10,6 @@ type ReviewCreate struct {
 type ReviewUpdate struct {
 	// UserID     *uint   `json:"user_id"  binding:"omitempty"`
 	// MedicineID *uint   `json:"medicine_id" binding:"omitempty"`
-	Rating     *uint   `json:"rating" binding:"omitempty,min=1,max=10"`
-	Text       *string `json:"text"`
+	Rating *uint   `json:"rating" binding:"omitempty,min=1,max=10"`
+	Text   *string `json:"text"`
 }

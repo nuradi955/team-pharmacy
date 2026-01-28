@@ -30,27 +30,27 @@ func (m *medicineService) Create(req dto.MedicineCreate) (*models.Medicine, erro
 	// Cheking Category and Subcategory
 	_, err := m.CategoryRP.GetByID(*req.CategoryID)
 	if err != nil {
-		return nil, errors.New("Invalid Category")
+		return nil, errors.New("invalid Category")
 	}
 	_, err = m.SubCategoryRP.GetByID(*req.SubcategoryID)
 	if err != nil {
-		return nil, errors.New("Invalid Subcategory")
+		return nil, errors.New("invalid Subcategory")
 	}
 	// Cheking Name
 	name := strings.TrimSpace(req.Name)
 	if name == "" {
-		return nil, errors.New("Write the Name")
+		return nil, errors.New("write the Name")
 	}
 	// Cheking Price
 	if req.Price <= 0 {
-		return nil, errors.New("Isnt Correct Price")
+		return nil, errors.New("isnt Correct Price")
 	}
 
 	// Create
 	medicine := &models.Medicine{
 		Name:                 name,
 		Description:          req.Description,
-		Price:                req.Price,
+		Price:                int64(req.Price),
 		StockQuantity:        req.StockQuantity,
 		CategoryID:           req.CategoryID,
 		SubcategoryID:        req.SubcategoryID,
@@ -67,7 +67,7 @@ func (m *medicineService) GetAll() ([]models.Medicine, error) {
 }
 func (m *medicineService) GetByID(id uint) (*models.Medicine, error) {
 	if id == 0 {
-		return nil, errors.New("Id can,t be zero")
+		return nil, errors.New("id can,t be zero")
 	}
 	medicine, err := m.MedicineRepo.GetByID(id)
 	if err != nil {
@@ -77,7 +77,7 @@ func (m *medicineService) GetByID(id uint) (*models.Medicine, error) {
 }
 func (m *medicineService) Update(req dto.MedicineUpdate, id uint) error {
 	if id == 0 {
-		return errors.New("Id cant be zero")
+		return errors.New("id cant be zero")
 	}
 
 	medicine, err := m.MedicineRepo.GetByID(id)
@@ -96,16 +96,16 @@ func (m *medicineService) Update(req dto.MedicineUpdate, id uint) error {
 	if req.Manufacturer != nil {
 		manufacturer := strings.TrimSpace(*req.Manufacturer)
 		if manufacturer == "" {
-			return errors.New("Manufacturer isnt correct")
+			return errors.New("manufacturer isnt correct")
 		}
 		medicine.Manufacturer = manufacturer
 	}
 
 	if req.Price != nil {
 		if *req.Price <= 0 {
-			return errors.New("Isnt Correct Price")
+			return errors.New("isnt Correct Price")
 		}
-		medicine.Price = *req.Price
+		medicine.Price = int64(*req.Price)
 	}
 
 	if req.StockQuantity != nil {
@@ -114,7 +114,7 @@ func (m *medicineService) Update(req dto.MedicineUpdate, id uint) error {
 
 	if req.CategoryID != nil {
 		if _, err := m.CategoryRP.GetByID(*req.CategoryID); err != nil {
-			return errors.New("CategoryID isnt Correct")
+			return errors.New("categoryID isnt Correct")
 		}
 		medicine.CategoryID = req.CategoryID
 	}
@@ -122,13 +122,13 @@ func (m *medicineService) Update(req dto.MedicineUpdate, id uint) error {
 	if req.SubcategoryID != nil {
 		sub, err := m.SubCategoryRP.GetByID(*req.SubcategoryID)
 		if err != nil {
-			return errors.New("Subcategory isnt correct")
+			return errors.New("subcategory isnt correct")
 		}
 		if medicine.CategoryID == nil {
-			return errors.New("Error:CategoryID is nill")
+			return errors.New("error:CategoryID is nill")
 		}
 		if sub.CategoryID != *medicine.CategoryID {
-			return errors.New("Subcategory dont have Correct category")
+			return errors.New("subcategory dont have Correct category")
 		}
 
 		medicine.SubcategoryID = req.SubcategoryID
@@ -151,7 +151,7 @@ func (m *medicineService) Update(req dto.MedicineUpdate, id uint) error {
 
 func (m *medicineService) Delete(id uint) error {
 	if id == 0 {
-		return errors.New("Id cant be zero")
+		return errors.New("id cant be zero")
 	}
 	_, err := m.MedicineRepo.GetByID(id)
 	if err != nil {
